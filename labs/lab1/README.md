@@ -68,6 +68,10 @@
 |  SW29 | int vlan 60 | 192.168.60.1/24          |192.168.60.0/24         | vlan 60       |
 |  SW29 | Lo0         | 192.168.255.29/32        |                        | Loopback      |
 
+Графическая схема 
+
+![](Chokurdah_scheme.png)
+
 ### Триада
 
 | Equip | Port | Address                  | Network                | Description   |
