@@ -94,4 +94,4 @@
 
 Графическая схема 
 
-![](Triada.png)
+![](Triada_scheme.png)
