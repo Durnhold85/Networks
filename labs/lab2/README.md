@@ -37,7 +37,22 @@ R28#
 ip access-list extended default_R25
  permit ip 192.168.60.0 0.0.0.255 any
 ```
+Создадим route-map default_R25, привяжем к карте ACL default_R25 и настроим следующий next-hop R25(123.56.78.221).
 
+```
+R28#
+route-map default_R25 permit 10
+ match ip address default_R25
+ set ip next-hop 123.56.78.221
+```
+Привяжем route-map к входящему интерфейсу e0/2.
+```
+R28#
+interface Ethernet0/2
+ description R28 to SW29
+ ip address 192.168.254.1 255.255.255.252
+ ip policy route-map default_R25
+```
 
 
 
