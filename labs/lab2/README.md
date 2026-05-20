@@ -54,5 +54,25 @@ interface Ethernet0/2
  ip policy route-map default_R25
 ```
 
-Настроим проверку доступности ip адреса R25(123.56.78.221) с помощью IPSLA.
+### Настроим проверку доступности ip адреса R25(123.56.78.221) с помощью IPSLA.
+Настроим IP SLA
+```
+R28#
+ip sla 1
+ icmp-echo 123.56.78.221 source-ip 123.56.78.222
+ frequency 5
+ip sla schedule 1 life forever start-time now
+```
+Настроим track и привяжем его к route-map default_R25
+
+```
+R28#
+track 1 ip sla 1 reachability
+ delay down 5 up 10
+
+route-map default_R25 permit 10
+ match ip address default_R25
+ set ip next-hop verify-availability 123.56.78.221 1 track 1
+
+```
 
