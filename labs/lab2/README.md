@@ -75,4 +75,12 @@ route-map default_R25 permit 10
  set ip next-hop verify-availability 123.56.78.221 1 track 1
 
 ```
+### Настроим для офиса Лабытнанги маршрут по-умолчанию.
+
+```
+R27#
+
+ip route 0.0.0.0 0.0.0.0 96.254.180.225 name R25
+
+```
 
