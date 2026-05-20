@@ -54,5 +54,5 @@ interface Ethernet0/2
  ip policy route-map default_R25
 ```
 
-
+Настроим проверку доступности ip адреса R25(123.56.78.221) с помощью IPSLA.
 
