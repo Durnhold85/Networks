@@ -173,3 +173,19 @@ interface Ethernet1/1
  ip ospf 1 area 10
  duplex auto
 ```
+Соседство между маршрутизаторами поднялось.
+
+```
+SW4#sh ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.13       1   FULL/DR         00:00:39    10.0.254.25     Ethernet1/1
+10.0.255.12       1   FULL/DR         00:00:33    10.0.254.37     Ethernet1/0
+```
+```
+SW5#sh ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.13       1   FULL/DR         00:00:37    10.0.254.33     Ethernet1/0
+10.0.255.12       1   FULL/DR         00:00:31    10.0.254.29     Ethernet1/1
+```
