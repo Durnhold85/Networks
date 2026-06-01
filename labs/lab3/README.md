@@ -300,28 +300,28 @@ O IA     10.0.255.15/32 [110/21] via 10.0.254.37, 00:45:00, Ethernet1/0
 R14#
 router ospf 1
  router-id 10.0.255.14
- area 109 stub no-summary
+ area 101 stub no-summary
  default-information originate always metric 20 metric-type 1
 !
 interface Ethernet0/3
  ip address 10.0.254.17 255.255.255.252
- ip ospf 1 area 109
+ ip ospf 1 area 101
 ```
 ```
 R19#
 router ospf 1
  router-id 10.0.255.19
- area 109 stub
+ area 101 stub
 !
 interface Loopback0
  ip address 10.0.255.19 255.255.255.255
  ip ospf network point-to-point
- ip ospf 1 area 109
+ ip ospf 1 area 101
 !
 interface Ethernet0/0
  description R19 to R14
  ip address 10.0.254.18 255.255.255.252
- ip ospf 1 area 109
+ ip ospf 1 area 101
 ```
 ### В таблице маршрутизации видим только один маршрут по умолчанию.
 ```
