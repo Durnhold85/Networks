@@ -1,7 +1,7 @@
 
-### OSPF. Фильтрация
+# OSPF. Фильтрация
 
-### План работ:
+# План работ:
 
 1. Маршрутизаторы R14-R15 находятся в зоне 0 - backbone.
 2. Маршрутизаторы R12-R13 находятся в зоне 10. Дополнительно к маршрутам должны получать маршрут по умолчанию.
@@ -12,7 +12,7 @@
 
 ![](OSPF.png)
 
-# Настроим зону AREA0 (Backbone).
+### Настроим зону AREA0 (Backbone).
 
 ```
 R14#
@@ -93,7 +93,7 @@ interface Ethernet0/3
  ip ospf 1 area 0
 ```
 
-# Соседство между маршрутизаторами поднялось.
+### Соседство между маршрутизаторами поднялось.
 
 ```
 R12#sh ip ospf neighbor
@@ -123,7 +123,7 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.0.255.13       1   FULL/BDR        00:00:31    10.0.254.14     Ethernet0/0
 10.0.255.12       1   FULL/BDR        00:00:33    10.0.254.6      Ethernet0/1
 ```
-# Настроим AREA 10
+### Настроим AREA 10
 ```
 R12#
 interface Ethernet0/0
@@ -230,7 +230,7 @@ interface Vlan20
  standby 20 preempt
  ip ospf 1 area 10
 ```
-# Соседство между маршрутизаторами поднялось.
+### Соседство между маршрутизаторами поднялось.
 
 ```
 SW4#sh ip ospf neighbor
@@ -246,7 +246,7 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.0.255.13       1   FULL/DR         00:00:37    10.0.254.33     Ethernet1/0
 10.0.255.12       1   FULL/DR         00:00:31    10.0.254.29     Ethernet1/1
 ```
-# Настроим R14 как ASBR маршрутизатор который будет распросранять маршрут по умолчанию c метрикой 20 с OSPF external type 1, а R15 c метрикой 30 для резервирования маршрута по умолчанию.
+### Настроим R14 как ASBR маршрутизатор который будет распросранять маршрут по умолчанию c метрикой 20 с OSPF external type 1, а R15 c метрикой 30 для резервирования маршрута по умолчанию.
 
 ```
 R14#
@@ -260,7 +260,7 @@ router ospf 1
  router-id 10.0.255.15
  default-information originate always metric 30 metric-type 1
 ```
-# Маршрут появился в таблице маршрутизации.
+### Маршрут появился в таблице маршрутизации.
 
 ```
 SW4#sh ip ro ospf
@@ -293,4 +293,51 @@ O IA     10.0.255.14/32 [110/21] via 10.0.254.37, 00:04:09, Ethernet1/0
                         [110/21] via 10.0.254.25, 00:04:09, Ethernet1/1
 O IA     10.0.255.15/32 [110/21] via 10.0.254.37, 00:45:00, Ethernet1/0
                         [110/21] via 10.0.254.25, 00:45:00, Ethernet1/1
+```
+### Настроим зону AREA 101, изменим тип зоны на totally stub для замены всех маршрутов, кроме локальных для зоны, на маршрут по умолчанию.
+
+```
+R14#
+router ospf 1
+ router-id 10.0.255.14
+ area 109 stub no-summary
+ default-information originate always metric 20 metric-type 1
+!
+interface Ethernet0/3
+ ip address 10.0.254.17 255.255.255.252
+ ip ospf 1 area 109
+```
+```
+R19#
+router ospf 1
+ router-id 10.0.255.19
+ area 109 stub
+!
+interface Loopback0
+ ip address 10.0.255.19 255.255.255.255
+ ip ospf network point-to-point
+ ip ospf 1 area 109
+!
+interface Ethernet0/0
+ description R19 to R14
+ ip address 10.0.254.18 255.255.255.252
+ ip ospf 1 area 109
+```
+### В таблице маршрутизации видим только один маршрут по умолчанию.
+```
+R19(config)#do sh ip ro ospf
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 10.0.254.17 to network 0.0.0.0
+
+O*IA  0.0.0.0/0 [110/11] via 10.0.254.17, 00:18:12, Ethernet0/0
+
 ```
