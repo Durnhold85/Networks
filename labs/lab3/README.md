@@ -341,3 +341,75 @@ Gateway of last resort is 10.0.254.17 to network 0.0.0.0
 O*IA  0.0.0.0/0 [110/11] via 10.0.254.17, 00:18:12, Ethernet0/0
 
 ```
+### Настроим зону AREA102 и отфильтруем маршруты с AREA101 на R15 чтобы сети 10.0.254.16/30 и 10.0.255.19/32 не попали в таблицу маршрутизации маршрутизатора R20 в зоне 102.
+
+Настроим ospf в зоне 102.
+
+```
+R15#
+interface Ethernet0/3
+ description R14 to R19
+ ip address 10.0.254.1 255.255.255.252
+ ip ospf 1 area 102
+```
+```
+R20#
+router ospf 1
+ router-id 10.0.255.20
+!
+interface Loopback0
+ ip address 10.0.255.20 255.255.255.255
+ ip ospf network point-to-point
+ ip ospf 1 area 102
+!
+interface Ethernet0/0
+ description R20 to R15
+ ip address 10.0.254.2 255.255.255.252
+ ip ospf 1 area 102
+```
+Настроим фильтрацию.
+```
+R15#
+ip prefix-list AREA102 seq 5 deny 10.0.254.16/30
+ip prefix-list AREA102 seq 10 deny 10.0.255.19/32
+ip prefix-list AREA102 seq 15 permit 0.0.0.0/0 le 32
+!
+router ospf 1
+ router-id 10.0.255.15
+ area 102 filter-list prefix AREA102 in
+ default-information originate always metric 30 metric-type 1
+```
+Маршруты с зоны 101 не попадают в зону 102
+```
+R20#sh ip ro ospf
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 10.0.254.1 to network 0.0.0.0
+
+O*E1  0.0.0.0/0 [110/40] via 10.0.254.1, 00:22:44, Ethernet0/0
+      10.0.0.0/8 is variably subnetted, 19 subnets, 3 masks
+O IA     10.0.10.0/24 [110/31] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.20.0/24 [110/31] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.254.4/30 [110/20] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.254.8/30 [110/30] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.254.12/30 [110/20] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.254.20/30 [110/30] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.254.24/30 [110/30] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.254.28/30 [110/30] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.254.32/30 [110/30] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.254.36/30 [110/30] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.255.4/32 [110/31] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.255.5/32 [110/31] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.255.12/32 [110/21] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.255.13/32 [110/21] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.255.14/32 [110/31] via 10.0.254.1, 00:22:44, Ethernet0/0
+O IA     10.0.255.15/32 [110/11] via 10.0.254.1, 00:22:44, Ethernet0/0
+```
