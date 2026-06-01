@@ -104,3 +104,28 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.0.255.13       1   FULL/BDR        00:00:31    10.0.254.14     Ethernet0/0
 10.0.255.12       1   FULL/BDR        00:00:33    10.0.254.6      Ethernet0/1
 ```
+Настроим AREA 10
+```
+R12#
+interface Ethernet0/0
+ description R12 to SW4
+ ip address 10.0.254.37 255.255.255.252
+ ip ospf 1 area 10
+!
+interface Ethernet0/1
+ description R12 to SW5
+ ip address 10.0.254.29 255.255.255.252
+ ip ospf 1 area 10
+```
+```
+R13#
+interface Ethernet0/0
+ description R13 to SW5
+ ip address 10.0.254.33 255.255.255.252
+ ip ospf 1 area 10
+!
+interface Ethernet0/1
+ description R13 to SW4
+ ip address 10.0.254.25 255.255.255.252
+ ip ospf 1 area 10
+```
