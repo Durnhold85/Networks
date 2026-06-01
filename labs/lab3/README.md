@@ -73,3 +73,34 @@ interface Ethernet0/3
  ip address 10.0.254.10 255.255.255.252
  ip ospf 1 area 0
 ```
+
+Соседство между маршрутизаторами поднялось.
+
+```
+R12#sh ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.14       1   FULL/DR         00:00:38    10.0.254.21     Ethernet0/2
+10.0.255.15       1   FULL/DR         00:00:37    10.0.254.5      Ethernet0/3
+```
+```
+R13#sh ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.15       1   FULL/DR         00:00:35    10.0.254.13     Ethernet0/2
+10.0.255.14       1   FULL/DR         00:00:33    10.0.254.9      Ethernet0/3
+```
+```
+R14#sh ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.12       1   FULL/BDR        00:00:32    10.0.254.22     Ethernet0/0
+10.0.255.13       1   FULL/BDR        00:00:31    10.0.254.10     Ethernet0/1
+```
+```
+R15#sh ip ospf neighbor
+
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.13       1   FULL/BDR        00:00:31    10.0.254.14     Ethernet0/0
+10.0.255.12       1   FULL/BDR        00:00:33    10.0.254.6      Ethernet0/1
+```
