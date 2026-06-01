@@ -11,3 +11,50 @@
 Схема.
 
 ![](OSPF.png)
+
+Настроим зону AREA0 (Backbone).
+
+```
+R14#
+router ospf 1
+ router-id 10.0.255.14
+!
+interface Ethernet0/0
+ ip address 10.0.254.21 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/1
+ ip address 10.0.254.9 255.255.255.252
+ ip ospf 1 area 0
+```
+```
+R15#
+router ospf 1
+ router-id 10.0.255.15
+!
+interface Ethernet0/0
+ description R15 to R13
+ ip address 10.0.254.13 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/1
+ description R15 to R12
+ ip address 10.0.254.5 255.255.255.252
+ ip ospf 1 area 0
+```
+
+```
+R12#
+router ospf 1
+ router-id 10.0.255.12
+!
+interface Ethernet0/2
+ description R12 to R14
+ ip address 10.0.254.22 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/3
+ description R12 to R15
+ ip address 10.0.254.6 255.255.255.252
+ ip ospf 1 area 0
+```
