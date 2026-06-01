@@ -12,7 +12,7 @@
 
 ![](OSPF.png)
 
-Настроим зону AREA0 (Backbone).
+# Настроим зону AREA0 (Backbone).
 
 ```
 R14#
@@ -93,7 +93,7 @@ interface Ethernet0/3
  ip ospf 1 area 0
 ```
 
-Соседство между маршрутизаторами поднялось.
+# Соседство между маршрутизаторами поднялось.
 
 ```
 R12#sh ip ospf neighbor
@@ -123,7 +123,7 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.0.255.13       1   FULL/BDR        00:00:31    10.0.254.14     Ethernet0/0
 10.0.255.12       1   FULL/BDR        00:00:33    10.0.254.6      Ethernet0/1
 ```
-Настроим AREA 10
+# Настроим AREA 10
 ```
 R12#
 interface Ethernet0/0
@@ -230,7 +230,7 @@ interface Vlan20
  standby 20 preempt
  ip ospf 1 area 10
 ```
-Соседство между маршрутизаторами поднялось.
+# Соседство между маршрутизаторами поднялось.
 
 ```
 SW4#sh ip ospf neighbor
@@ -246,7 +246,7 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.0.255.13       1   FULL/DR         00:00:37    10.0.254.33     Ethernet1/0
 10.0.255.12       1   FULL/DR         00:00:31    10.0.254.29     Ethernet1/1
 ```
-Настроим R14 как ASBR маршрутизатор который будет распросранять маршрут по умолчанию c метрикой 20 с OSPF external type 1, а R15 c метрикой 30 для резервирования маршрута по умолчанию.
+# Настроим R14 как ASBR маршрутизатор который будет распросранять маршрут по умолчанию c метрикой 20 с OSPF external type 1, а R15 c метрикой 30 для резервирования маршрута по умолчанию.
 
 ```
 R14#
@@ -260,7 +260,7 @@ router ospf 1
  router-id 10.0.255.15
  default-information originate always metric 30 metric-type 1
 ```
-Маршрут появился в таблице маршрутизации.
+# Маршрут появился в таблице маршрутизации.
 
 ```
 SW4#sh ip ro ospf
