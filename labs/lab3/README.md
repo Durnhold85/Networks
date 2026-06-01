@@ -129,3 +129,47 @@ interface Ethernet0/1
  ip address 10.0.254.25 255.255.255.252
  ip ospf 1 area 10
 ```
+```
+SW4#
+router ospf 1
+ router-id 10.0.255.4
+ passive-interface default
+ no passive-interface Ethernet1/0
+ no passive-interface Ethernet1/1
+!
+interface Ethernet1/0
+ description SW4 to R12
+ no switchport
+ ip address 10.0.254.38 255.255.255.252
+ ip ospf 1 area 10
+ duplex auto
+!
+interface Ethernet1/1
+ description SW4 to R13
+ no switchport
+ ip address 10.0.254.26 255.255.255.252
+ ip ospf 1 area 10
+ duplex auto
+```
+```
+SW5#
+router ospf 1
+ router-id 10.0.255.5
+ passive-interface default
+ no passive-interface Ethernet1/0
+ no passive-interface Ethernet1/1
+!
+interface Ethernet1/0
+ description SW5 to R13
+ no switchport
+ ip address 10.0.254.34 255.255.255.252
+ ip ospf 1 area 10
+ duplex auto
+!
+interface Ethernet1/1
+ description SW5 to R12
+ no switchport
+ ip address 10.0.254.30 255.255.255.252
+ ip ospf 1 area 10
+ duplex auto
+```
