@@ -246,3 +246,51 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.0.255.13       1   FULL/DR         00:00:37    10.0.254.33     Ethernet1/0
 10.0.255.12       1   FULL/DR         00:00:31    10.0.254.29     Ethernet1/1
 ```
+Настроим R14 как ASBR маршрутизатор который будет распросранять маршрут по умолчанию c метрикой 20 с OSPF external type 1, а R15 c метрикой 30 для резервирования маршрута по умолчанию.
+
+```
+R14#
+router ospf 1
+ router-id 10.0.255.14
+ default-information originate always metric 20 metric-type 1
+```
+```
+R15#
+router ospf 1
+ router-id 10.0.255.15
+ default-information originate always metric 30 metric-type 1
+```
+Маршрут появился в таблице маршрутизации.
+
+```
+SW4#sh ip ro ospf
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 10.0.254.37 to network 0.0.0.0
+
+O*E1  0.0.0.0/0 [110/40] via 10.0.254.37, 00:04:04, Ethernet1/0
+                [110/40] via 10.0.254.25, 00:04:04, Ethernet1/1
+      10.0.0.0/8 is variably subnetted, 20 subnets, 3 masks
+O IA     10.0.254.4/30 [110/20] via 10.0.254.37, 00:45:00, Ethernet1/0
+O IA     10.0.254.8/30 [110/20] via 10.0.254.25, 00:45:00, Ethernet1/1
+O IA     10.0.254.12/30 [110/20] via 10.0.254.25, 00:45:00, Ethernet1/1
+O IA     10.0.254.20/30 [110/20] via 10.0.254.37, 00:45:00, Ethernet1/0
+O        10.0.254.28/30 [110/20] via 10.0.254.37, 00:45:00, Ethernet1/0
+O        10.0.254.32/30 [110/20] via 10.0.254.25, 00:45:00, Ethernet1/1
+O        10.0.255.5/32 [110/21] via 10.0.254.37, 00:36:24, Ethernet1/0
+                       [110/21] via 10.0.254.25, 00:36:24, Ethernet1/1
+O IA     10.0.255.12/32 [110/11] via 10.0.254.37, 00:45:00, Ethernet1/0
+O IA     10.0.255.13/32 [110/11] via 10.0.254.25, 00:45:00, Ethernet1/1
+O IA     10.0.255.14/32 [110/21] via 10.0.254.37, 00:04:09, Ethernet1/0
+                        [110/21] via 10.0.254.25, 00:04:09, Ethernet1/1
+O IA     10.0.255.15/32 [110/21] via 10.0.254.37, 00:45:00, Ethernet1/0
+                        [110/21] via 10.0.254.25, 00:45:00, Ethernet1/1
+```
