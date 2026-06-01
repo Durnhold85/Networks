@@ -58,3 +58,18 @@ interface Ethernet0/3
  ip address 10.0.254.6 255.255.255.252
  ip ospf 1 area 0
 ```
+```
+R13#
+router ospf 1
+ router-id 10.0.255.13
+!
+interface Ethernet0/2
+ description R13 to R15
+ ip address 10.0.254.14 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/3
+ description R13 to R14
+ ip address 10.0.254.10 255.255.255.252
+ ip ospf 1 area 0
+```
