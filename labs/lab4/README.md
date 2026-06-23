@@ -199,3 +199,93 @@ System Id      Type Interface   IP Address      State Holdtime Circuit Id
 R24            L2   Et0/0       10.100.254.9    UP    27       01
 R25            L2   Et0/2       10.100.254.13   UP    29       02
 ```
+Посмотрим таблицу маршрутизации на каждом маршрутизаторе
+```
+R23#sh ip ro isis
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      10.0.0.0/8 is variably subnetted, 10 subnets, 2 masks
+i L2     10.100.254.8/30 [115/20] via 10.100.254.2, 00:45:09, Ethernet0/2
+i L2     10.100.254.12/30 [115/20] via 10.100.254.6, 00:45:09, Ethernet0/1
+i L2     10.100.255.24/32 [115/20] via 10.100.254.2, 00:45:09, Ethernet0/2
+i L2     10.100.255.25/32 [115/20] via 10.100.254.6, 00:45:09, Ethernet0/1
+i L2     10.100.255.26/32 [115/30] via 10.100.254.6, 00:45:09, Ethernet0/1
+                          [115/30] via 10.100.254.2, 00:45:09, Ethernet0/2
+```
+```
+R24#sh ip ro isis
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      10.0.0.0/8 is variably subnetted, 10 subnets, 2 masks
+i L2     10.100.254.4/30 [115/20] via 10.100.254.1, 00:46:17, Ethernet0/2
+i L2     10.100.254.12/30 [115/20] via 10.100.254.10, 00:46:17, Ethernet0/1
+i L2     10.100.255.23/32 [115/20] via 10.100.254.1, 00:46:17, Ethernet0/2
+i L2     10.100.255.25/32 [115/30] via 10.100.254.10, 00:46:17, Ethernet0/1
+                          [115/30] via 10.100.254.1, 00:46:17, Ethernet0/2
+i L2     10.100.255.26/32 [115/20] via 10.100.254.10, 00:46:17, Ethernet0/1
+```
+```
+R25#sh ip ro isis
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      10.0.0.0/8 is variably subnetted, 10 subnets, 2 masks
+i L2     10.100.254.0/30 [115/20] via 10.100.254.5, 00:46:55, Ethernet0/0
+i L2     10.100.254.8/30 [115/20] via 10.100.254.14, 00:46:55, Ethernet0/2
+i L2     10.100.255.23/32 [115/20] via 10.100.254.5, 00:46:55, Ethernet0/0
+i L2     10.100.255.24/32 [115/30] via 10.100.254.14, 00:46:55, Ethernet0/2
+                          [115/30] via 10.100.254.5, 00:46:55, Ethernet0/0
+i L2     10.100.255.26/32 [115/20] via 10.100.254.14, 00:46:55, Ethernet0/2
+```
+```
+R26#sh ip ro isis
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      10.0.0.0/8 is variably subnetted, 10 subnets, 2 masks
+i L2     10.100.254.0/30 [115/20] via 10.100.254.9, 00:47:47, Ethernet0/0
+i L2     10.100.254.4/30 [115/20] via 10.100.254.13, 00:47:47, Ethernet0/2
+i L2     10.100.255.23/32 [115/30] via 10.100.254.13, 00:47:47, Ethernet0/2
+                          [115/30] via 10.100.254.9, 00:47:47, Ethernet0/0
+i L2     10.100.255.24/32 [115/20] via 10.100.254.9, 00:47:47, Ethernet0/0
+i L2     10.100.255.25/32 [115/20] via 10.100.254.13, 00:47:47, Ethernet0/2
+```
+
