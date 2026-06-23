@@ -166,3 +166,36 @@ interface Ethernet0/2
  isis network point-to-point
 
 ```
+Соседство между маршрутизаторами поднялось.
+```
+R23#show isis neighbors
+
+Tag R23:
+System Id      Type Interface   IP Address      State Holdtime Circuit Id
+R24            L2   Et0/2       10.100.254.2    UP    23       02
+R25            L2   Et0/1       10.100.254.6    UP    24       01
+```
+```
+R24#sh isis neighbors
+
+Tag R24:
+System Id      Type Interface   IP Address      State Holdtime Circuit Id
+R23            L2   Et0/2       10.100.254.1    UP    22       02
+R26            L2   Et0/1       10.100.254.10   UP    29       01
+```
+```
+R25#sh isis neighbors
+
+Tag R25:
+System Id      Type Interface   IP Address      State Holdtime Circuit Id
+R23            L2   Et0/0       10.100.254.5    UP    22       01
+R26            L2   Et0/2       10.100.254.14   UP    26       02
+```
+```
+R26#show isis neighbors
+
+Tag R26:
+System Id      Type Interface   IP Address      State Holdtime Circuit Id
+R24            L2   Et0/0       10.100.254.9    UP    27       01
+R25            L2   Et0/2       10.100.254.13   UP    29       02
+```
