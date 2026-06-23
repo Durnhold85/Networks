@@ -62,6 +62,7 @@ interface Ethernet0/2
  isis network point-to-point
 ```
 ```
+R24#
 router isis R24
  net 49.0024.0101.0025.5024.00
  is-type level-2-only
@@ -96,4 +97,38 @@ interface Ethernet0/2
  ipv6 enable
  ipv6 router isis R24
  isis network point-to-point
+```
+```
+R25#
+router isis R25
+ net 49.2222.0101.0025.5025.00
+ is-type level-2-only
+ metric-style wide
+ !
+ address-family ipv6
+  multi-topology
+ exit-address-family
+!
+interface Loopback0
+ ip address 10.100.255.25 255.255.255.255
+ ip router isis R25
+ ipv6 enable
+ ipv6 router isis R25
+!
+interface Ethernet0/0
+ description R25 to R23
+ ip address 10.100.254.6 255.255.255.252
+ ip router isis R25
+ ipv6 enable
+ ipv6 router isis R25
+ isis network point-to-point
+!
+interface Ethernet0/2
+ description R25 to R26
+ ip address 10.100.254.13 255.255.255.252
+ ip router isis R25
+ ipv6 enable
+ ipv6 router isis R25
+ isis network point-to-point
+
 ```
