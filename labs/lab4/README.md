@@ -27,3 +27,4 @@ ipv6 cef
 
 ipv6 unicast-routing
 ```
+Настроим isis на всех маршрутизаторах, включим расширенные меторики metric-style wide, включим multi-topology для поддержки ipv6 протоколом isis, привяжем интерфейсы к isis, сделаем point-to-point линки между маршрутизаторами.
