@@ -173,7 +173,7 @@ interface Ethernet0/2
  ipv6 enable
 ```
 
-
+Настроим R18,SW9 и SW10
 
 ```
 R18#
