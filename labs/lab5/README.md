@@ -229,5 +229,40 @@ interface Ethernet0/1
 ```
 ```
 R32#
-
+router eigrp R32
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  af-interface default
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/0
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 172.20.254.0 0.0.1.255
+  eigrp router-id 172.20.255.32
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 1
+  !
+  af-interface default
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/0
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+ exit-address-family
+!
+interface Ethernet0/0
+ description R32 to SW16
+ ip address 172.20.254.26 255.255.255.252
+ ipv6 enable
 ```
