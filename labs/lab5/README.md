@@ -19,3 +19,4 @@
 ipv6 cef
 ipv6 unicast-routing
 ```
+### Настроим EIGRP , включим поддержку ipv6, так же включим ipv6 на интерфейсах.
