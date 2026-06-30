@@ -23,6 +23,7 @@ ipv6 unicast-routing
 
 На R16 настроим суммарный маршрут по умолчанию 0.0.0.0 0.0.0.0 в сторону R32, в сторону SW9 и SW10 настроим анонс суммарного маршрута 172.20.254.0 255.255.254.0 
 ```
+R16#
 router eigrp R16
  !
  address-family ipv4 unicast autonomous-system 1
@@ -103,6 +104,14 @@ interface Ethernet0/3
  ipv6 enable
 ```
 
+На R17 пропишем анонс суммарного маршута в сторону SW9 и SW10 172.20.254.0 255.255.254.0
+```
+R17#
+
+```
+
+
+
 ```
 R18#
 router eigrp R18
@@ -157,5 +166,68 @@ interface Ethernet0/1
 ```
 ```
 R32#
-
+router eigrp R17
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  af-interface default
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/2
+   summary-address 172.20.254.0 255.255.254.0
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/0
+   summary-address 172.20.254.0 255.255.254.0
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 172.20.254.0 0.0.1.255
+  eigrp router-id 172.20.255.17
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 1
+  !
+  af-interface default
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/0
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/1
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/2
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+ exit-address-family
+!
+interface Ethernet0/0
+ description R17 to SW9
+ ip address 172.20.254.13 255.255.255.252
+ ipv6 enable
+!
+interface Ethernet0/1
+ description R17 to R18
+ ip address 172.20.254.1 255.255.255.252
+ ipv6 enable
+!
+interface Ethernet0/2
+ description R17 to SW10
+ ip address 172.20.254.17 255.255.255.252
+ ipv6 enable
 ```
