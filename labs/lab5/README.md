@@ -266,3 +266,55 @@ interface Ethernet0/0
  ip address 172.20.254.26 255.255.255.252
  ipv6 enable
 ```
+```
+SW9#
+router eigrp SW9
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  af-interface default
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/3
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet1/0
+   no passive-interface
+  exit-af-interface
+  !
+  topology base
+  exit-af-topology
+  network 172.20.0.0
+  eigrp router-id 172.20.255.9
+ exit-address-family
+ !
+ address-family ipv6 unicast autonomous-system 1
+  !
+  af-interface default
+   passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet1/0
+   no passive-interface
+  exit-af-interface
+  !
+  af-interface Ethernet0/3
+   no passive-interface
+  exit-af-interface
+  !
+interface Ethernet0/3
+ description SW9 to R17
+ no switchport
+ ip address 172.20.254.14 255.255.255.252
+ duplex auto
+ ipv6 enable
+!
+interface Ethernet1/0
+ description SW9 to R16
+ no switchport
+ ip address 172.20.254.22 255.255.255.252
+ duplex auto
+ ipv6 enable
+```
