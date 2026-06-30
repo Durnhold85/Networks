@@ -374,3 +374,62 @@ interface Ethernet1/0
  duplex auto
  ipv6 enable
 ```
+На SW9 и SW10 пришёл суммарный маршрут 172.20.254.0/23
+
+```
+SW9#sh ip ro eigrp
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      172.20.0.0/16 is variably subnetted, 10 subnets, 4 masks
+D        172.20.254.0/23 [90/1024640] via 172.20.254.21, 02:02:48, Ethernet1/0
+                         [90/1024640] via 172.20.254.13, 02:02:48, Ethernet0/3
+SW9#
+
+```
+
+```
+SW10#sh ip ro eigrp
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      172.20.0.0/16 is variably subnetted, 10 subnets, 4 masks
+D        172.20.254.0/23 [90/1024640] via 172.20.254.17, 02:02:02, Ethernet1/0
+                         [90/1024640] via 172.20.254.9, 02:02:02, Ethernet0/3
+
+```
+На R32 приходит олько маршрут по умолчанию
+```
+R32#sh ip ro eigrp
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 172.20.254.25 to network 0.0.0.0
+
+D*    0.0.0.0/0 [90/1024640] via 172.20.254.25, 02:03:44, Ethernet0/0
+```
