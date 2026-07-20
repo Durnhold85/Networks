@@ -222,3 +222,31 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 48.81.46.9      4          520     149     151        4    0    0 02:13:44        0
 56.23.124.53    4          520     155     154        4    0    0 02:16:09        2
 ```
+### Анонсируем Loopback интрефесы на маршрутизаторах в Москве и Санкт-Петербурге.
+Москва
+```
+R14#show run | section bgp
+router bgp 1001
+ bgp router-id 10.0.255.14
+ bgp log-neighbor-changes
+ network 10.0.255.14 mask 255.255.255.255
+ neighbor 85.123.45.17 remote-as 101
+```
+```
+R15#sh run | section bgp
+router bgp 1001
+ bgp router-id 10.0.255.15
+ bgp log-neighbor-changes
+ network 10.0.255.15 mask 255.255.255.255
+ neighbor 185.15.145.53 remote-as 301
+```
+Санкт-Петербург
+```
+R18#sh run | section bgp
+router bgp 2042
+ bgp router-id 172.20.255.18
+ bgp log-neighbor-changes
+ network 172.20.255.18 mask 255.255.255.255
+ neighbor 48.81.46.9 remote-as 520
+ neighbor 56.23.124.53 remote-as 520
+```
