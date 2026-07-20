@@ -250,3 +250,85 @@ router bgp 2042
  neighbor 48.81.46.9 remote-as 520
  neighbor 56.23.124.53 remote-as 520
 ```
+Проверим маршруты в итаблице маршрутизации и IP связность между пограничными маршрутизаторами.
+```
+R14#sh ip ro bgp
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      172.20.0.0/32 is subnetted, 1 subnets
+B        172.20.255.18 [20/0] via 85.123.45.17, 01:52:25
+
+R14#ping 172.20.255.18 source 10.0.255.14
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 172.20.255.18, timeout is 2 seconds:
+Packet sent with a source address of 10.0.255.14
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+```
+```
+R15#sh ip ro bgp
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      172.20.0.0/32 is subnetted, 1 subnets
+B        172.20.255.18 [20/0] via 185.15.145.53, 01:53:49
+
+R15#ping 172.20.255.18 source 10.0.255.15
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 172.20.255.18, timeout is 2 seconds:
+Packet sent with a source address of 10.0.255.15
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+```
+```
+R18#sh ip ro bgp
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is not set
+
+      10.0.0.0/32 is subnetted, 2 subnets
+B        10.0.255.14 [20/0] via 56.23.124.53, 01:37:18
+B        10.0.255.15 [20/0] via 56.23.124.53, 01:49:50
+
+R18#ping 10.0.255.14 source 172.20.255.18
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 10.0.255.14, timeout is 2 seconds:
+Packet sent with a source address of 172.20.255.18
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+R18#ping 10.0.255.15 source 172.20.255.18
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 10.0.255.15, timeout is 2 seconds:
+Packet sent with a source address of 172.20.255.18
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+```
+Маршруты в таблице маршрутизации есть, IP связность так же присутствует.
