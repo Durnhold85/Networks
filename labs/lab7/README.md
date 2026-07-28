@@ -15,3 +15,22 @@
 ### Настроим IBGP в офисе Москва, а так же сделаем приоритетным провайдером ISP Ламас.
 
 ![](moscow_ibgp.png)
+Настроим IBGP сессию между R14 и R15, на R15 повысим значение атрибута local preference сделав его маршруты приоритетнее для исходящего трафика.
+Создадим route-map LOCAL_PREF_LAMAS и привяжем её к соседу eBGP neighbor 185.15.145.53
+
+```
+R15#
+route-map LOCAL_PREF_LAMAS permit 10
+ set local-preference 200
+```
+```
+router bgp 1001
+ bgp router-id 10.0.255.15
+ bgp log-neighbor-changes
+ network 10.0.255.15 mask 255.255.255.255
+ neighbor 10.0.255.14 remote-as 1001
+ neighbor 10.0.255.14 update-source Loopback0
+ neighbor 10.0.255.14 next-hop-self
+ neighbor 185.15.145.53 remote-as 301
+ neighbor 185.15.145.53 route-map LOCAL_PREF_LAMAS in
+```
