@@ -34,3 +34,20 @@ router bgp 1001
  neighbor 185.15.145.53 remote-as 301
  neighbor 185.15.145.53 route-map LOCAL_PREF_LAMAS in
 ```
+На R14 настроим IBGP сессию с R15 и изменим значение атрибута as-path, добавим наш номер AS в as-path чтобы для провайдера Киторн полученные от нам маршруты были менее приоритетными.
+```
+R14#
+route-map SET_AS_PATH_PREPEND permit 10
+ set as-path prepend 1001 1001 1001
+```
+```
+router bgp 1001
+ bgp router-id 10.0.255.14
+ bgp log-neighbor-changes
+ network 10.0.255.14 mask 255.255.255.255
+ neighbor 10.0.255.15 remote-as 1001
+ neighbor 10.0.255.15 update-source Loopback0
+ neighbor 10.0.255.15 next-hop-self
+ neighbor 85.123.45.17 remote-as 101
+ neighbor 85.123.45.17 route-map SET_AS_PATH_PREPEND out
+```
