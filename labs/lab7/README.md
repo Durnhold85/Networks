@@ -164,8 +164,8 @@ router bgp 520
  neighbor 10.100.255.25 next-hop-self
  neighbor 48.81.46.10 remote-as 2042
 ```
-```
 Маршруты по ibgp приходят.
+```
 R24#sh ip bgp
 BGP table version is 9, local router ID is 10.100.255.24
 
