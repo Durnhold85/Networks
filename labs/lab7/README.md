@@ -111,3 +111,54 @@ RPKI validation codes: V valid, I invalid, N Not found
  *>                   28.1.0.58                              0 520 2042 i
 
 ```
+### Настроим IBGP в ISP Триада. В роли Route Reflector будет R25.
+```
+R25#
+router bgp 520
+ bgp router-id 10.100.255.25
+ bgp log-neighbor-changes
+ network 10.100.255.25 mask 255.255.255.255
+ neighbor 10.100.255.23 remote-as 520
+ neighbor 10.100.255.23 update-source Loopback0
+ neighbor 10.100.255.23 route-reflector-client
+ neighbor 10.100.255.24 remote-as 520
+ neighbor 10.100.255.24 update-source Loopback0
+ neighbor 10.100.255.24 route-reflector-client
+ neighbor 10.100.255.26 remote-as 520
+ neighbor 10.100.255.26 update-source Loopback0
+ neighbor 10.100.255.26 route-reflector-client
+```
+```
+R23#
+router bgp 520
+ bgp router-id 10.100.255.23
+ bgp log-neighbor-changes
+ network 10.100.255.23 mask 255.255.255.255
+ neighbor 10.100.255.25 remote-as 520
+ neighbor 10.100.255.25 update-source Loopback0
+ neighbor 10.100.255.25 next-hop-self
+ neighbor 28.1.0.57 remote-as 101
+```
+```
+R24#
+router bgp 520
+ bgp router-id 10.100.255.24
+ bgp log-neighbor-changes
+ network 10.100.255.24 mask 255.255.255.255
+ neighbor 10.100.255.25 remote-as 520
+ neighbor 10.100.255.25 update-source Loopback0
+ neighbor 10.100.255.25 next-hop-self
+ neighbor 33.186.35.121 remote-as 301
+ neighbor 56.23.124.54 remote-as 2042
+```
+```
+R26#
+router bgp 520
+ bgp router-id 10.100.255.26
+ bgp log-neighbor-changes
+ network 10.100.255.26 mask 255.255.255.255
+ neighbor 10.100.255.25 remote-as 520
+ neighbor 10.100.255.25 update-source Loopback0
+ neighbor 10.100.255.25 next-hop-self
+ neighbor 48.81.46.10 remote-as 2042
+```
