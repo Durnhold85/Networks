@@ -51,3 +51,63 @@ router bgp 1001
  neighbor 85.123.45.17 remote-as 101
  neighbor 85.123.45.17 route-map SET_AS_PATH_PREPEND out
 ```
+Проверим на R14 и R22 маршруты.
+На R14 видим маршруты от R15 приоритетнее так как local зкуаккутсу 200.
+```
+R14#sh ip bgp
+BGP table version is 12, local router ID is 10.0.255.14
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  10.0.255.14/32   0.0.0.0                  0         32768 i
+ r>i 10.0.255.15/32   10.0.255.15              0    100      0 i
+ *>i 10.100.255.23/32 10.0.255.15              0    200      0 301 520 i
+ *                    85.123.45.17                           0 101 520 i
+ *   10.100.255.24/32 85.123.45.17                           0 101 520 i
+ *>i                  10.0.255.15              0    200      0 301 520 i
+ *   10.100.255.25/32 85.123.45.17                           0 101 520 i
+ *>i                  10.0.255.15              0    200      0 301 520 i
+ *>i 10.100.255.26/32 10.0.255.15              0    200      0 301 520 i
+ *                    85.123.45.17                           0 101 520 i
+ *>i 172.20.255.18/32 10.0.255.15              0    200      0 301 520 2042 i
+ *                    85.123.45.17                           0 101 520 2042 i
+```
+Видим что от R22 в сторону R14 маршруты не приоритетные так как as-path длиннее.
+```
+R22#sh ip bgp
+BGP table version is 10, local router ID is 193.12.255.22
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *   10.0.255.14/32   28.1.0.58                              0 520 301 1001 i
+ *>                   24.153.14.58                           0 301 1001 i
+ *                    85.123.45.18             0             0 1001 1001 1001 1001 i
+ *   10.0.255.15/32   28.1.0.58                              0 520 301 1001 i
+ *>                   24.153.14.58                           0 301 1001 i
+ *                    85.123.45.18                           0 1001 1001 1001 1001 i
+ *   10.100.255.23/32 85.123.45.18                           0 1001 1001 1001 1001 301 520 i
+ *                    24.153.14.58                           0 301 520 i
+ *>                   28.1.0.58                0             0 520 i
+ *   10.100.255.24/32 85.123.45.18                           0 1001 1001 1001 1001 301 520 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *                    24.153.14.58                           0 301 520 i
+ *>                   28.1.0.58                              0 520 i
+ *   10.100.255.25/32 85.123.45.18                           0 1001 1001 1001 1001 301 520 i
+ *                    24.153.14.58                           0 301 520 i
+ *>                   28.1.0.58                              0 520 i
+ *   10.100.255.26/32 85.123.45.18                           0 1001 1001 1001 1001 301 520 i
+ *                    24.153.14.58                           0 301 520 i
+ *>                   28.1.0.58                              0 520 i
+ *   172.20.255.18/32 85.123.45.18                           0 1001 1001 1001 1001 301 520 2042 i
+ *                    24.153.14.58                           0 301 520 2042 i
+ *>                   28.1.0.58                              0 520 2042 i
+
+```
