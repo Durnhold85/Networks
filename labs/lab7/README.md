@@ -112,6 +112,8 @@ RPKI validation codes: V valid, I invalid, N Not found
 
 ```
 ### Настроим IBGP в ISP Триада. В роли Route Reflector будет R25.
+### В роли IGP настроен протокол ISIS.
+![](Triada_scheme.png)
 ```
 R25#
 router bgp 520
