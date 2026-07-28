@@ -11,7 +11,14 @@
 ## Схема стенда.
 
 ![](BGP.png)
-
+### Перед настройкой IBGP на маршрутизаторе R14, уберем анонс шлюза по умолчанию с протокола ospf.(#no default-information originate)
+```
+R14#
+router ospf 1
+ router-id 10.0.255.14
+ area 101 stub no-summary
+ area 109 stub
+```
 ### Настроим IBGP в офисе Москва, а так же сделаем приоритетным провайдером ISP Ламас.
 
 ![](moscow_ibgp.png)
