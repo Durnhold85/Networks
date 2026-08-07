@@ -59,7 +59,7 @@ router bgp 1001
  neighbor 85.123.45.17 route-map SET_AS_PATH_PREPEND out
 ```
 Проверим на R14 и R22 маршруты.
-На R14 видим маршруты от R15 приоритетнее так как local зкуаккутсу 200.
+На R14 видим маршруты от R15 приоритетнее так как local preference 200.
 ```
 R14#sh ip bgp
 BGP table version is 12, local router ID is 10.0.255.14
