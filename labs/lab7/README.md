@@ -126,16 +126,14 @@ R25#
 router bgp 520
  bgp router-id 10.100.255.25
  bgp log-neighbor-changes
- network 10.100.255.25 mask 255.255.255.255
- neighbor 10.100.255.23 remote-as 520
- neighbor 10.100.255.23 update-source Loopback0
- neighbor 10.100.255.23 route-reflector-client
- neighbor 10.100.255.24 remote-as 520
- neighbor 10.100.255.24 update-source Loopback0
- neighbor 10.100.255.24 route-reflector-client
- neighbor 10.100.255.26 remote-as 520
- neighbor 10.100.255.26 update-source Loopback0
- neighbor 10.100.255.26 route-reflector-client
+ neighbor AS520 peer-group
+ neighbor AS520 remote-as 520
+ neighbor AS520 update-source Loopback0
+ neighbor AS520 route-reflector-client
+ neighbor AS520 next-hop-self
+ neighbor 10.100.255.23 peer-group AS520
+ neighbor 10.100.255.24 peer-group AS520
+ neighbor 10.100.255.26 peer-group AS520
 ```
 ```
 R23#
