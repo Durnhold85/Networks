@@ -31,3 +31,18 @@ router bgp 1001
  bgp router-id 10.0.255.15
  neighbor 185.15.145.53 filter-list 55 out
 ```
+### Настроим R18 в Санкт-Петербурге так чтобы не было транзитного трафика. Используем prefix-list и route-map.
+
+```
+R18#
+ip prefix-list LOCAL seq 5 permit 172.20.0.0/16 le 32
+!
+route-map TO_TRIADA permit 10
+ match ip address prefix-list LOCAL
+!
+router bgp 2042
+ bgp router-id 172.20.255.18
+ neighbor 48.81.46.9 route-map TO_TRIADA out
+ neighbor 56.23.124.53 route-map TO_TRIADA out
+
+```
