@@ -31,6 +31,73 @@ router bgp 1001
  bgp router-id 10.0.255.15
  neighbor 185.15.145.53 filter-list 55 out
 ```
+Видимо что провайдеры получают только наши локальные префиксы.
+```
+R22#sh ip bgp neighbors 85.123.45.18 received-routes
+BGP table version is 54, local router ID is 193.12.255.22
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *   10.0.254.0/30    85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.254.4/30    85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.254.8/30    85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.254.12/30   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.254.16/30   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.254.20/30   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.254.24/30   85.123.45.18                           0 1001 1001 1001 1001 ?
+     Network          Next Hop            Metric LocPrf Weight Path
+ *   10.0.254.28/30   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.254.32/30   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.254.36/30   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.255.4/32    85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.255.5/32    85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.255.12/32   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.255.13/32   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.255.14/32   85.123.45.18             0             0 1001 1001 1001 1001 i
+ *   10.0.255.15/32   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.255.19/32   85.123.45.18                           0 1001 1001 1001 1001 ?
+ *   10.0.255.20/32   85.123.45.18                           0 1001 1001 1001 1001 ?
+     Network          Next Hop            Metric LocPrf Weight Path
+
+Total number of prefixes 18
+
+```
+```
+R21#sh ip bgp neighbors 185.15.145.54 received-routes
+BGP table version is 96, local router ID is 37.24.255.21
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  10.0.254.0/30    185.15.145.54            0             0 1001 ?
+ *>  10.0.254.4/30    185.15.145.54            0             0 1001 ?
+ *>  10.0.254.8/30    185.15.145.54           20             0 1001 ?
+ *>  10.0.254.12/30   185.15.145.54            0             0 1001 ?
+ *>  10.0.254.16/30   185.15.145.54           30             0 1001 ?
+ *>  10.0.254.20/30   185.15.145.54           20             0 1001 ?
+ *>  10.0.254.24/30   185.15.145.54           20             0 1001 ?
+ *>  10.0.254.28/30   185.15.145.54           20             0 1001 ?
+ *>  10.0.254.32/30   185.15.145.54           20             0 1001 ?
+ *>  10.0.254.36/30   185.15.145.54           20             0 1001 ?
+ *>  10.0.255.4/32    185.15.145.54           21             0 1001 ?
+ *>  10.0.255.5/32    185.15.145.54           21             0 1001 ?
+ *>  10.0.255.12/32   185.15.145.54           11             0 1001 ?
+ *>  10.0.255.13/32   185.15.145.54           11             0 1001 ?
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>  10.0.255.14/32   185.15.145.54           21             0 1001 ?
+ *>  10.0.255.15/32   185.15.145.54            0             0 1001 ?
+ *>  10.0.255.19/32   185.15.145.54           31             0 1001 ?
+ *>  10.0.255.20/32   185.15.145.54           11             0 1001 ?
+
+Total number of prefixes 18
+```
 ### Настроим R18 в Санкт-Петербурге так чтобы не было транзитного трафика. Используем prefix-list и route-map.
 
 ```
