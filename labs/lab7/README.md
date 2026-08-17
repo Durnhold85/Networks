@@ -248,4 +248,15 @@ B        10.100.255.26 [20/0] via 56.23.124.53, 03:38:35
 
 ```
 ### Анонсируем локальные сети чтобы была связность между офисом в Москве и Санкт-Петербург.
-
+```
+R15#
+ip prefix-list OSPF_to_BGP seq 5 permit 10.10.0.0/16 le 32
+!
+route-map ONLY_LOCAL permit 10
+ match ip address prefix-list ONLY_LOCAL
+!
+router bgp 1001
+ bgp router-id 10.0.255.15
+ bgp log-neighbor-changes
+ redistribute ospf 1 route-map ONLY_LOCAL
+```
