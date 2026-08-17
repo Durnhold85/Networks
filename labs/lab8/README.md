@@ -11,3 +11,23 @@
 ## Схема стенда.
 
 ![](BGP.png)
+
+### Настроим R14 и R15 в Москве так чтобы не было транзитного трафика. Используем filter-list.
+```
+R14#
+ip as-path access-list 55 permit ^$
+!
+router bgp 1001
+ bgp router-id 10.0.255.14
+ neighbor 85.123.45.17 filter-list 55 out
+```
+
+
+```
+R15#
+ip as-path access-list 55 permit ^$
+!
+router bgp 1001
+ bgp router-id 10.0.255.15
+ neighbor 185.15.145.53 filter-list 55 out
+```
