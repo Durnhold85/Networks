@@ -261,3 +261,31 @@ router bgp 1001
  bgp log-neighbor-changes
  redistribute ospf 1 route-map ONLY_LOCAL
 ```
+Проведём редистрибуцию в Санкт-Петербурге.
+```
+R18#
+ip prefix-list EIGRP_to_BGP seq 5 permit 172.20.0.0/16 le 32
+!
+route-map ONLY_LOCAL permit 10
+ match ip address prefix-list EIGRP_to_BGP
+!
+router bgp 2042
+ bgp router-id 172.20.255.18
+ bgp log-neighbor-changes
+ bgp bestpath as-path multipath-relax
+ redistribute eigrp 1 route-map ONLY_LOCAL
+!
+ip prefix-list EXTERNAL_NETWORK seq 5 permit 10.0.0.0/16 le 32
+!
+route-map BGP_TO_EIGRP permit 10
+ match ip address prefix-list EXTERNAL_NETWORK
+ set metric 1000000 10 255 1 1500
+!
+router eigrp R18
+ !
+ address-family ipv4 unicast autonomous-system 1
+  !
+  topology base
+   redistribute bgp 2042 route-map BGP_TO_EIGRP
+!
+```
