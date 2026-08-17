@@ -114,7 +114,7 @@ router bgp 2042
 
 ```
 
-### Настроим R22 ISP Киторн чтобы в сторону R14 (Москва) приходил только default route.
+### Настроим R22 ISP Киторн так чтобы в сторону R14 (Москва) приходил только default route.
 
 ```
 R22#
@@ -127,7 +127,7 @@ router bgp 101
  bgp router-id 193.12.255.22
  neighbor 85.123.45.18 route-map ONLY_DEFAULT out
 ```
-Проверим на R14, по bgp от соседа приходит толькоь default.
+Проверим на R14, по bgp от соседа приходит только default.
 ```
 R14#sh ip bgp neighbors 85.123.45.17 received-routes
 BGP table version is 100, local router ID is 10.0.255.14
@@ -141,4 +141,46 @@ RPKI validation codes: V valid, I invalid, N Not found
  r   0.0.0.0          85.123.45.17                           0 101 i
 
 Total number of prefixes 1
+```
+### Настроим R21 ISP Ламас так чтобы в сторону R15 (Москва) приходил только default route и префиксы AS 2042 (Санкт-Петербург).
+```
+R21#
+ip as-path access-list 10 permit _2042$
+!
+router bgp 301
+ bgp router-id 37.24.255.21
+ neighbor 185.15.145.54 default-originate
+ neighbor 185.15.145.54 filter-list 10 out
+```
+Проверим на R15, по bgp от соседа приходит только default и префиксы с AS2042
+
+```
+R15#sh ip bgp neighbors 185.15.145.53 received-routes
+BGP table version is 99, local router ID is 10.0.255.15
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *   0.0.0.0          185.15.145.53                          0 301 i
+ *   172.20.30.0/24   185.15.145.53                          0 301 520 2042 ?
+ *   172.20.40.0/24   185.15.145.53                          0 301 520 2042 ?
+ *   172.20.254.0/30  185.15.145.53                          0 301 520 2042 ?
+ *   172.20.254.4/30  185.15.145.53                          0 301 520 2042 ?
+ *   172.20.254.8/30  185.15.145.53                          0 301 520 2042 ?
+ *   172.20.254.12/30 185.15.145.53                          0 301 520 2042 ?
+ *   172.20.254.16/30 185.15.145.53                          0 301 520 2042 ?
+ *   172.20.254.20/30 185.15.145.53                          0 301 520 2042 ?
+ *   172.20.254.24/30 185.15.145.53                          0 301 520 2042 ?
+ *   172.20.255.9/32  185.15.145.53                          0 301 520 2042 ?
+ *   172.20.255.10/32 185.15.145.53                          0 301 520 2042 ?
+ *   172.20.255.16/32 185.15.145.53                          0 301 520 2042 ?
+ *   172.20.255.16/30 185.15.145.53                          0 301 520 2042 ?
+     Network          Next Hop            Metric LocPrf Weight Path
+ *   172.20.255.18/32 185.15.145.53                          0 301 520 2042 ?
+ *   172.20.255.32/32 185.15.145.53                          0 301 520 2042 ?
+
+Total number of prefixes 16
 ```
