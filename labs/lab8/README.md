@@ -113,3 +113,32 @@ router bgp 2042
  neighbor 56.23.124.53 route-map TO_TRIADA out
 
 ```
+
+### Настроим R22 ISP Киторн чтобы в сторону R14 (Москва) приходил только default route.
+
+```
+R22#
+ip prefix-list DEFAULT seq 5 permit 0.0.0.0/0
+!
+route-map ONLY_DEFAULT permit 10
+ match ip address prefix-list DEFAULT
+!
+router bgp 101
+ bgp router-id 193.12.255.22
+ neighbor 85.123.45.18 route-map ONLY_DEFAULT out
+```
+Проверим на R14, по bgp от соседа приходит толькоь default.
+```
+R14#sh ip bgp neighbors 85.123.45.17 received-routes
+BGP table version is 100, local router ID is 10.0.255.14
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ r   0.0.0.0          85.123.45.17                           0 101 i
+
+Total number of prefixes 1
+```
