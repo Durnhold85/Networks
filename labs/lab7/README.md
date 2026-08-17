@@ -215,14 +215,15 @@ BGP table version is 10, local router ID is 10.100.255.23
 
 ```
 ### Настроим в офисе Санкт - Петербург маршрутизатор R18 таким образом чтобы он распределял трафик по двум линкам одновременно.
-### Для этого пропишем maximum-paths 2.
+### Для этого пропишем maximum-paths 2 и bgp bestpath as-path multipath-relax
 
 ```
 R18#
 router bgp 2042
  bgp router-id 172.20.255.18
  bgp log-neighbor-changes
- network 172.20.255.18 mask 255.255.255.255
+ bgp bestpath as-path multipath-relax
+ redistribute eigrp 1 route-map ONLY_LOCAL
  neighbor 48.81.46.9 remote-as 520
  neighbor 56.23.124.53 remote-as 520
  maximum-paths 2
