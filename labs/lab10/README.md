@@ -69,3 +69,29 @@ interface Ethernet0/2
  ip address 85.123.45.18 255.255.255.252
  ip nat outside
 ```
+```
+R15#
+access-list 1 permit 10.0.10.0 0.0.0.255
+access-list 1 permit 10.0.20.0 0.0.0.255
+!
+interface Ethernet0/0
+ description R15 to R13
+ ip address 10.0.254.13 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/1
+ description R15 to R12
+ ip address 10.0.254.5 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/3
+ description R14 to R19
+ ip address 10.0.254.1 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/2
+ ip address 185.15.145.54 255.255.255.252
+ ip nat outside
+!
+ip nat inside source list 1 interface Ethernet0/2 overload
+```
