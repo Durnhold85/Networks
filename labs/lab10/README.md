@@ -43,3 +43,29 @@ ip nat inside source list 1 pool AS2042 overload
 ### Настроим NAT в Москве(R14,R15)
 
 ![](NAT_Moscow.png)
+
+Настроим NAT(PAT) на R14 и R15. Трансляция должна осуществляться в адрес автономной системы AS1001.
+
+```
+R14#
+access-list 1 permit 10.0.10.0 0.0.0.255
+access-list 1 permit 10.0.20.0 0.0.0.255
+!
+ip nat inside source list 1 interface Ethernet0/2 overload
+!
+interface Ethernet0/0
+ ip address 10.0.254.21 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/1
+ ip address 10.0.254.9 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/3
+ ip address 10.0.254.17 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/2
+ ip address 85.123.45.18 255.255.255.252
+ ip nat outside
+```
