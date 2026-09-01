@@ -95,3 +95,13 @@ interface Ethernet0/2
 !
 ip nat inside source list 1 interface Ethernet0/2 overload
 ```
+Настроим статический NAT для R20.
+```
+R15#
+ip nat source static 10.0.255.20 185.15.145.54
+```
+Настроим NAT так, чтобы R19 был доступен с любого узла для удаленного управления.
+```
+R15#
+ip nat inside source static tcp 10.0.255.19 22 185.15.145.54 2222 extendable
+```
