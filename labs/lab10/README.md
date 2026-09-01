@@ -15,3 +15,28 @@
 
 ![](NAT_Peterburg.png)
 
+Настроим Pool для внешних адресов, access-list и пропишем входящие и исходящий интерфейс для трансляции.
+
+```
+R18#
+access-list 1 permit 172.20.30.0 0.0.0.255
+access-list 1 permit 172.20.40.0 0.0.0.255
+!
+interface Ethernet0/0
+ description R18 to R16
+ ip address 172.20.254.5 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/1
+ description R18 to R17
+ ip address 172.20.254.2 255.255.255.252
+ ip nat inside
+!
+interface Ethernet0/2
+ description R18 to R24
+ ip address 56.23.124.53 255.255.255.248
+ ip nat outside
+!
+ip nat pool AS2042 56.23.124.49 56.23.124.53 netmask 255.255.255.248
+ip nat inside source list 1 pool AS2042 overload
+```
