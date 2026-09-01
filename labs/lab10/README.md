@@ -105,3 +105,38 @@ ip nat source static 10.0.255.20 185.15.145.54
 R15#
 ip nat inside source static tcp 10.0.255.19 22 185.15.145.54 2222 extendable
 ```
+### Настроим статический NAT(PAT) для офиса Чокурдах.
+
+```
+R28#
+access-list 1 permit 192.168.50.0 0.0.0.255
+access-list 1 permit 192.168.60.0 0.0.0.255
+!
+interface Ethernet0/0
+ description R28 to R26
+ ip address 15.67.83.114 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ description R28 to R25
+ ip address 123.56.78.222 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/2
+ description R28 to SW29
+ ip address 192.168.254.1 255.255.255.252
+ ip nat inside
+!
+route-map ETH1 permit 10
+ match ip address 1
+ match interface Ethernet0/2
+!
+route-map ETH0 permit 10
+ match ip address 1
+ match interface Ethernet0/0
+!
+ip nat source route-map ETH0 interface Ethernet0/0 overload
+ip nat source route-map ETH1 interface Ethernet0/1 overload
+```
