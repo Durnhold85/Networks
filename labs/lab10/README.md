@@ -38,7 +38,7 @@ interface Ethernet0/2
  ip nat outside
 !
 ip nat pool AS2042 56.23.124.49 56.23.124.53 netmask 255.255.255.248
-ip nat inside source list 1 pool AS2042 overload
+ip nat inside source list 1 pool AS2042 
 ```
 ### Настроим NAT в Москве(R14,R15)
 
