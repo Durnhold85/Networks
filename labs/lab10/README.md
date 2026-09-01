@@ -131,7 +131,7 @@ interface Ethernet0/2
 !
 route-map ETH1 permit 10
  match ip address 1
- match interface Ethernet0/2
+ match interface Ethernet0/1
 !
 route-map ETH0 permit 10
  match ip address 1
