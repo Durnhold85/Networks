@@ -140,3 +140,52 @@ route-map ETH0 permit 10
 ip nat source route-map ETH0 interface Ethernet0/0 overload
 ip nat source route-map ETH1 interface Ethernet0/1 overload
 ```
+### Настроим для IPv4 DHCP сервер в офисе Москва на маршрутизаторах R12 и R13. VPC1 и VPC7 должны получать сетевые настройки по DHCP.
+
+```
+R12#
+ip dhcp excluded-address 10.0.10.1 10.0.10.3
+!
+ip dhcp pool Vlan10
+ network 10.0.10.0 255.255.255.0
+ default-router 10.0.10.1
+!
+```
+```
+R13#
+ip dhcp excluded-address 10.0.20.1 10.0.20.3
+!
+ip dhcp pool Vlan20
+ network 10.0.20.0 255.255.255.0
+ default-router 10.0.20.1
+!
+```
+Настроим на SW4 и SW5 DHCP Relay.(Настройки на обоих свичах одинаковы).
+```
+interface Vlan10
+ ip address 10.0.10.2 255.255.255.0
+ ip helper-address 10.0.255.12
+ standby 10 ip 10.0.10.1
+ standby 10 priority 150
+ standby 10 preempt
+ ip ospf 1 area 10
+!
+interface Vlan20
+ ip address 10.0.20.2 255.255.255.0
+ ip helper-address 10.0.255.13
+ standby 20 ip 10.0.20.1
+ standby 20 priority 110
+ standby 20 preempt
+ ip ospf 1 area 10
+```
+Проверим что VPC1 и VPC7 получают настройки по DHCP.
+```
+VPC1
+VPCS> ip dhcp
+DORA IP 10.0.10.4/24 GW 10.0.10.1
+```
+```
+VPC7
+VPC7> ip dhcp
+DORA IP 10.0.20.4/24 GW 10.0.20.1
+```
