@@ -201,6 +201,7 @@ ntp peer 10.0.255.13
 ```
 ```
 R13#
+clock timezone MSK 3 0
 !
 ntp source Loopback0
 ntp master 5
