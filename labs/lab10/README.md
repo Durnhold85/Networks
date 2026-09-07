@@ -189,3 +189,21 @@ VPC7
 VPC7> ip dhcp
 DORA IP 10.0.20.4/24 GW 10.0.20.1
 ```
+### Настроим NTP сервер на R12 и R13. Все устройства в офисе Москва должны синхронизировать время с R12 и R13.
+
+```
+R12#
+clock timezone MSK 3 0
+!
+ntp source Loopback0
+ntp master 4
+ntp peer 10.0.255.13
+```
+```
+R13#
+!
+ntp source Loopback0
+ntp master 5
+ntp update-calendar
+ntp peer 10.0.255.12
+```
