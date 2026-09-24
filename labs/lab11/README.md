@@ -87,3 +87,43 @@ interface Tunnel3
  tunnel source Ethernet0/2
  tunnel mode gre multipoint
 ```
+Настроим SPOKE, R27 и R28
+```
+R27#
+interface Tunnel0
+ description DMVPN to Hub
+ ip address 10.0.252.3 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map 10.0.252.1 185.15.145.54
+ ip nhrp map multicast 185.15.145.54
+ ip nhrp map 10.0.252.2 85.123.45.18
+ ip nhrp map multicast 85.123.45.18
+ ip nhrp network-id 100
+ ip nhrp nhs 10.0.252.1 priority 1 cluster 1
+ ip nhrp nhs 10.0.252.2 priority 2 cluster 1
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ tunnel source Ethernet0/0
+ tunnel mode gre multipoint
+```
+```
+R28#
+interface Tunnel0
+ description DMVPN to Hub
+ ip address 10.0.252.4 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map 10.0.252.1 185.15.145.54
+ ip nhrp map multicast 185.15.145.54
+ ip nhrp map 10.0.252.2 85.123.45.18
+ ip nhrp map multicast 85.123.45.18
+ ip nhrp network-id 100
+ ip nhrp nhs 10.0.252.1 priority 1 cluster 1
+ ip nhrp nhs 10.0.252.2 priority 2 cluster 1
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ tunnel source Ethernet0/0
+ tunnel mode gre multipoint
+```
+Настроим маршрутизацю iBGP.
