@@ -59,3 +59,31 @@ Tunnel1                    10.11.0.6       YES manual up                    up
 ### Настроим DMVPN между Москвой, Чокурдах, Лабытнанги.
 Москва центр, R14 и R15 Hubs, Лабытнанги(R27) и Чокурдах(R28) Spoke.
 Настроим R14 и R15
+```
+R15#
+interface Tunnel3
+ description DMVPN Cloud 1 - Primary HUB
+ ip address 10.0.252.1 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map multicast dynamic
+ ip nhrp network-id 100
+ ip nhrp redirect
+ ip tcp adjust-mss 1360
+ tunnel source Ethernet0/2
+ tunnel mode gre multipoint
+```
+```
+R14#
+interface Tunnel3
+ description DMVPN Cloud 1 - Secondary HUB
+ ip address 10.0.252.2 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map multicast dynamic
+ ip nhrp network-id 100
+ ip nhrp redirect
+ ip tcp adjust-mss 1360
+ tunnel source Ethernet0/2
+ tunnel mode gre multipoint
+```
