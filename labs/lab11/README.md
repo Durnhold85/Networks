@@ -239,3 +239,65 @@ router bgp 1001
   neighbor SPOKES route-reflector-client
   neighbor SPOKES route-map SPOKE_ROUTERS out
 ```
+Настроим SPOKES R27 и R28.
+```
+R27#
+router bgp 1001
+ bgp router-id 172.31.255.27
+ bgp log-neighbor-changes
+ neighbor 10.0.252.1 remote-as 1001
+ neighbor 10.0.252.2 remote-as 1001
+ !
+ address-family ipv4
+  network 172.31.255.27 mask 255.255.255.255
+  neighbor 10.0.252.1 activate
+  neighbor 10.0.252.2 activate
+ exit-address-family
+```
+```
+R27#sh ip bgp sum
+BGP router identifier 172.31.255.27, local AS number 1001
+BGP table version is 92, main routing table version 92
+4 network entries using 560 bytes of memory
+7 path entries using 560 bytes of memory
+2/2 BGP path/bestpath attribute entries using 288 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1408 total bytes of memory
+BGP activity 23/19 prefixes, 45/38 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+10.0.252.1      4         1001      55      54       92    0    0 00:45:03        3
+10.0.252.2      4         1001      53      56       92    0    0 00:44:51        3
+
+```
+```
+R28#
+router bgp 1001
+ bgp router-id 192.168.255.28
+ bgp log-neighbor-changes
+ neighbor 10.0.252.1 remote-as 1001
+ neighbor 10.0.252.2 remote-as 1001
+ !
+ address-family ipv4
+  network 192.168.255.28 mask 255.255.255.255
+  neighbor 10.0.252.1 activate
+  neighbor 10.0.252.2 activate
+ exit-address-family
+```
+```
+R28#sh ip bgp summ
+BGP router identifier 192.168.255.28, local AS number 1001
+BGP table version is 92, main routing table version 92
+4 network entries using 560 bytes of memory
+7 path entries using 560 bytes of memory
+2/2 BGP path/bestpath attribute entries using 288 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1408 total bytes of memory
+BGP activity 23/19 prefixes, 45/38 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+10.0.252.1      4         1001      56      55       92    0    0 00:45:24        3
+10.0.252.2      4         1001      56      56       92    0    0 00:45:05        3
+```
