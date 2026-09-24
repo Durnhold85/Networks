@@ -185,3 +185,57 @@ R14#sh ip nhrp detail
 ```
 
 Настроим маршрутизацю iBGP.
+R14 и R15.
+```
+R14#
+ip route 10.0.0.0 255.255.0.0 Null0
+ip route 172.31.0.0 255.255.0.0 Null0
+ip route 192.168.0.0 255.255.0.0 Null0
+!
+ip prefix-list LOCAL seq 5 permit 10.0.0.0/16
+ip prefix-list LOCAL seq 10 permit 172.31.0.0/16
+ip prefix-list LOCAL seq 15 permit 192.168.0.0/16
+!
+route-map SPOKE_ROUTERS permit 10
+ match ip address prefix-list LOCAL
+!
+router bgp 1001
+ bgp router-id 10.0.255.14
+ bgp log-neighbor-changes
+ bgp listen range 10.0.252.0/24 peer-group SPOKES
+ neighbor SPOKES peer-group
+ neighbor SPOKES remote-as 1001
+ !
+ address-family ipv4
+  network 10.0.255.14 mask 255.255.255.255
+  redistribute static route-map SPOKE_ROUTERS
+  neighbor SPOKES activate
+  neighbor SPOKES route-reflector-client
+  neighbor SPOKES route-map SPOKE_ROUTERS out
+```
+```
+R15#
+ip route 10.0.0.0 255.255.0.0 Null0
+ip route 172.31.0.0 255.255.0.0 Null0
+ip route 192.168.0.0 255.255.0.0 Null0
+!
+ip prefix-list LOCAL seq 5 permit 10.0.0.0/16
+ip prefix-list LOCAL seq 10 permit 172.31.0.0/16
+ip prefix-list LOCAL seq 15 permit 192.168.0.0/16
+!
+route-map SPOKE_ROUTERS permit 10
+ match ip address prefix-list LOCAL
+!
+router bgp 1001
+ bgp router-id 10.0.255.15
+ bgp log-neighbor-changes
+ bgp listen range 10.0.252.0/24 peer-group SPOKES
+ neighbor SPOKES peer-group
+ neighbor SPOKES remote-as 1001
+ !
+ address-family ipv4
+  redistribute static route-map SPOKE_ROUTERS
+  neighbor SPOKES activate
+  neighbor SPOKES route-reflector-client
+  neighbor SPOKES route-map SPOKE_ROUTERS out
+```
