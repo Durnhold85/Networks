@@ -126,4 +126,62 @@ interface Tunnel0
  tunnel source Ethernet0/0
  tunnel mode gre multipoint
 ```
+Туннели поднялись.
+```
+R15#sh dmvpn
+Legend: Attrb --> S - Static, D - Dynamic, I - Incomplete
+        N - NATed, L - Local, X - No Socket
+        # Ent --> Number of NHRP entries with same NBMA peer
+        NHS Status: E --> Expecting Replies, R --> Responding, W --> Waiting
+        UpDn Time --> Up or Down Time for a Tunnel
+==========================================================================
+
+Interface: Tunnel3, IPv4 NHRP Details
+Type:Hub, NHRP Peers:2,
+
+ # Ent  Peer NBMA Addr Peer Tunnel Add State  UpDn Tm Attrb
+ ----- --------------- --------------- ----- -------- -----
+     1 96.254.180.226       10.0.252.3    UP 00:29:13     D
+     1 15.67.83.114         10.0.252.4    UP 00:28:25     D
+
+R15#show ip nhrp detail
+10.0.252.3/32 via 10.0.252.3
+   Tunnel3 created 00:30:31, expire 01:55:37
+   Type: dynamic, Flags: unique registered used nhop
+   NBMA address: 96.254.180.226
+10.0.252.4/32 via 10.0.252.4
+   Tunnel3 created 00:30:55, expire 01:30:18
+   Type: dynamic, Flags: unique registered used nhop
+   NBMA address: 15.67.83.114
+
+```
+```
+R14#sh dmvpn
+Legend: Attrb --> S - Static, D - Dynamic, I - Incomplete
+        N - NATed, L - Local, X - No Socket
+        # Ent --> Number of NHRP entries with same NBMA peer
+        NHS Status: E --> Expecting Replies, R --> Responding, W --> Waiting
+        UpDn Time --> Up or Down Time for a Tunnel
+==========================================================================
+
+Interface: Tunnel3, IPv4 NHRP Details
+Type:Hub, NHRP Peers:2,
+
+ # Ent  Peer NBMA Addr Peer Tunnel Add State  UpDn Tm Attrb
+ ----- --------------- --------------- ----- -------- -----
+     1 96.254.180.226       10.0.252.3    UP 00:31:16     D
+     1 15.67.83.114         10.0.252.4    UP 00:30:27     D
+
+R14#sh ip nhrp detail
+10.0.252.3/32 via 10.0.252.3
+   Tunnel3 created 00:31:44, expire 01:54:32
+   Type: dynamic, Flags: unique registered used nhop
+   NBMA address: 96.254.180.226
+10.0.252.4/32 via 10.0.252.4
+   Tunnel3 created 00:31:45, expire 01:29:13
+   Type: dynamic, Flags: unique registered used nhop
+   NBMA address: 15.67.83.114
+
+```
+
 Настроим маршрутизацю iBGP.
