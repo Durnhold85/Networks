@@ -301,3 +301,49 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 10.0.252.1      4         1001      56      55       92    0    0 00:45:24        3
 10.0.252.2      4         1001      56      56       92    0    0 00:45:05        3
 ```
+Проверим связь между SPOKES.
+```
+R27#ping 192.168.255.28
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 192.168.255.28, timeout is 2 seconds:
+!!!!!
+
+R27#traceroute  192.168.255.28
+Type escape sequence to abort.
+Tracing the route to 192.168.255.28
+VRF info: (vrf in name/id, vrf out name/id)
+  1 10.0.252.4 1 msec 0 msec *
+
+```
+Связь между SPOKE напрямую, а не через HUB. Отрабатывает протокол NHRP.
+```
+R27#sh ip ro
+Codes: L - local, C - connected, S - static, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2
+       i - IS-IS, su - IS-IS summary, L1 - IS-IS level-1, L2 - IS-IS level-2
+       ia - IS-IS inter area, * - candidate default, U - per-user static route
+       o - ODR, P - periodic downloaded static route, H - NHRP, l - LISP
+       a - application route
+       + - replicated route, % - next hop override
+
+Gateway of last resort is 96.254.180.225 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 96.254.180.225
+      10.0.0.0/8 is variably subnetted, 4 subnets, 3 masks
+B        10.0.0.0/16 [200/0] via 10.0.252.2, 00:50:16
+C        10.0.252.0/24 is directly connected, Tunnel0
+L        10.0.252.3/32 is directly connected, Tunnel0
+H        10.0.252.4/32 is directly connected, 00:02:40, Tunnel0
+      96.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C        96.254.180.224/30 is directly connected, Ethernet0/0
+L        96.254.180.226/32 is directly connected, Ethernet0/0
+      172.31.0.0/16 is variably subnetted, 2 subnets, 2 masks
+B        172.31.0.0/16 [200/0] via 10.0.252.2, 00:50:16
+C        172.31.255.27/32 is directly connected, Loopback0
+B     192.168.0.0/16 [200/0] via 10.0.252.2, 00:50:16
+      192.168.255.0/32 is subnetted, 1 subnets
+H        192.168.255.28 [250/1] via 10.0.252.4, 00:02:40, Tunnel0
+
+```
