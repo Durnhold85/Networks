@@ -46,11 +46,12 @@ router ospf 1
 R13#
 !
 mpls label protocol ldp
-!interface Ethernet0/2
+!
+interface Ethernet0/2
  description R13 to R15
  ip address 10.0.254.14 255.255.255.252
  mpls ip
-
+!
 interface Ethernet0/3
  description R13 to R14
  ip address 10.0.254.10 255.255.255.252
@@ -62,5 +63,20 @@ router ospf 1
 ~~~
 
 ~~~
-
+R15#
+!
+mpls label protocol ldp
+!
+interface Ethernet0/0
+ description R15 to R13
+ ip address 10.0.254.13 255.255.255.252
+ mpls ip
+!
+interface Ethernet0/1
+ description R15 to R12
+ ip address 10.0.254.5 255.255.255.252
+ mpls ip
+!
+router ospf 1
+ mpls ldp sync
 ~~~
