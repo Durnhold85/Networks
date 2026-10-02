@@ -48,6 +48,8 @@ mpls label protocol ldp
 !interface Ethernet0/2
  description R13 to R15
  ip address 10.0.254.14 255.255.255.252
+ mpls ip
+
 interface Ethernet0/3
  description R13 to R14
  ip address 10.0.254.10 255.255.255.252
