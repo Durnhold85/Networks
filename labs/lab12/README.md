@@ -116,10 +116,33 @@ L 1 10.0.254.10 MRU 1504 [Labels: implicit-null Exp: 0] 14 ms
 ! 2 10.0.254.13 9 ms
 ~~~
 ### Настроим маршрутизаторы в Санкт-Петербурге
+Так же уберем суммаризацию с eigrp создадим маршрут по умолчанию и анонсируем его с помощью eigrp.
 ~~~
 R18#
 !
 mpls label protocol ldp
 !
-
+interface Ethernet0/0
+ description R18 to R16
+ ip address 172.20.254.5 255.255.255.252
+ mpls ip
+!
+interface Ethernet0/1
+ description R18 to R17
+ ip address 172.20.254.2 255.255.255.252
+ mpls ip
+!
+ip route 0.0.0.0 0.0.0.0 Null0 250
+!
+ip prefix-list PL-DEFAULT-ONLY seq 5 permit 0.0.0.0/0
+!
+route-map RM-DEFAULT-ONLY permit 10
+ match ip address prefix-list PL-DEFAULT-ONLY
+!
+router eigrp R18
+ !
+ address-family ipv4 unicast autonomous-system 1
+!
+  topology base
+   redistribute static route-map RM-DEFAULT-ONLY
 ~~~
