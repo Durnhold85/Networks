@@ -80,3 +80,38 @@ interface Ethernet0/1
 router ospf 1
  mpls ldp sync
 ~~~
+MPLS работает
+~~~
+R15#traceroute mpls ipv4 10.0.255.14/32
+Tracing MPLS Label Switched Path to 10.0.255.14/32, timeout is 2 seconds
+
+Codes: '!' - success, 'Q' - request not sent, '.' - timeout,
+  'L' - labeled output interface, 'B' - unlabeled output interface,
+  'D' - DS Map mismatch, 'F' - no FEC mapping, 'f' - FEC mismatch,
+  'M' - malformed request, 'm' - unsupported tlvs, 'N' - no label entry,
+  'P' - no rx intf label prot, 'p' - premature termination of LSP,
+  'R' - transit router, 'I' - unknown upstream index,
+  'X' - unknown return code, 'x' - return code 0
+
+Type escape sequence to abort.
+  0 10.0.254.5 MRU 1500 [Labels: 29 Exp: 0]
+L 1 10.0.254.6 MRU 1504 [Labels: implicit-null Exp: 0] 18 ms
+! 2 10.0.254.21 18 ms
+~~~
+~~~
+R14#traceroute mpls ipv4 10.0.255.15/32
+Tracing MPLS Label Switched Path to 10.0.255.15/32, timeout is 2 seconds
+
+Codes: '!' - success, 'Q' - request not sent, '.' - timeout,
+  'L' - labeled output interface, 'B' - unlabeled output interface,
+  'D' - DS Map mismatch, 'F' - no FEC mapping, 'f' - FEC mismatch,
+  'M' - malformed request, 'm' - unsupported tlvs, 'N' - no label entry,
+  'P' - no rx intf label prot, 'p' - premature termination of LSP,
+  'R' - transit router, 'I' - unknown upstream index,
+  'X' - unknown return code, 'x' - return code 0
+
+Type escape sequence to abort.
+  0 10.0.254.9 MRU 1500 [Labels: 35 Exp: 0]
+L 1 10.0.254.10 MRU 1504 [Labels: implicit-null Exp: 0] 14 ms
+! 2 10.0.254.13 9 ms
+~~~
