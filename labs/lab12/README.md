@@ -115,3 +115,11 @@ Type escape sequence to abort.
 L 1 10.0.254.10 MRU 1504 [Labels: implicit-null Exp: 0] 14 ms
 ! 2 10.0.254.13 9 ms
 ~~~
+### Настроим маршрутизаторы в Санкт-Петербурге
+~~~
+R18#
+!
+mpls label protocol ldp
+!
+
+~~~
