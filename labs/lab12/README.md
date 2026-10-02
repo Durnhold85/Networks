@@ -43,6 +43,7 @@ router ospf 1
 ~~~
 
 ~~~
+R13#
 !
 mpls label protocol ldp
 !interface Ethernet0/2
