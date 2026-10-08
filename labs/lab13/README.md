@@ -272,3 +272,92 @@ interface: Tunnel0
         replay detection support: Y
         Status: ACTIVE(ACTIVE)
 ~~~
+### Настроим Dmvpn и IPsec на маршрутизаторах R27(Лабытнанги) и R28(Чокурдах).
+~~~
+R27#
+crypto ikev2 proposal IKEV2-PROP
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+crypto ikev2 policy IKEV2-Policy
+ proposal IKEV2-PROP
+crypto ikev2 keyring DMVPN-KEYS
+ peer ANY-SPOKE
+  address 0.0.0.0 0.0.0.0
+  pre-shared-key cisco123
+ !
+crypto ikev2 profile IKEV2-PROF
+ match identity remote address 0.0.0.0
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local DMVPN-KEYS
+ dpd 10 2 on-demand
+crypto ipsec transform-set GRE esp-3des esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPSEC
+ set transform-set GRE
+ set ikev2-profile IKEV2-PROF
+!
+interface Tunnel0
+ description DMVPN to Hub1
+ ip address 10.0.252.3 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map 10.0.252.1 185.15.145.54
+ ip nhrp map multicast 185.15.145.54
+ ip nhrp map 10.0.252.2 85.123.45.18
+ ip nhrp map multicast 85.123.45.18
+ ip nhrp network-id 100
+ ip nhrp nhs 10.0.252.1 priority 1 cluster 1
+ ip nhrp nhs 10.0.252.2 priority 2 cluster 1
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ tunnel source Ethernet0/0
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile IPSEC
+end
+~~~
+~~~
+R28#
+crypto ikev2 proposal IKEV2-PROP
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+crypto ikev2 policy IKEV2-Policy
+ proposal IKEV2-PROP
+crypto ikev2 keyring DMVPN-KEYS
+ peer ANY-SPOKE
+  address 0.0.0.0 0.0.0.0
+  pre-shared-key cisco123
+ !
+crypto ikev2 profile IKEV2-PROF
+ match identity remote address 0.0.0.0
+ authentication remote pre-share
+ authentication local pre-share
+ keyring local DMVPN-KEYS
+ dpd 10 2 on-demand
+crypto ipsec transform-set GRE esp-3des esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPSEC
+ set transform-set GRE
+ set ikev2-profile IKEV2-PROF
+!
+interface Tunnel0
+ description DMVPN to Hub1
+ ip address 10.0.252.4 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map 10.0.252.1 185.15.145.54
+ ip nhrp map multicast 185.15.145.54
+ ip nhrp map 10.0.252.2 85.123.45.18
+ ip nhrp map multicast 85.123.45.18
+ ip nhrp network-id 100
+ ip nhrp nhs 10.0.252.1 priority 1 cluster 1
+ ip nhrp nhs 10.0.252.2 priority 2 cluster 1
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ tunnel source Ethernet0/0
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile IPSEC
+end
+~~~
