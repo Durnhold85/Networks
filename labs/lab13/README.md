@@ -177,7 +177,8 @@ Tunnel-id Local                 Remote                fvrf/ivrf            Statu
       Life/Active Time: 86400/61560 sec
 
  IPv6 Crypto IKEv2  SA
-
+~~~
+~~~
 R18#sh crypto ipsec sa
 
 interface: Tunnel1
