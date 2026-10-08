@@ -361,3 +361,34 @@ interface Tunnel0
  tunnel protection ipsec profile IPSEC
 end
 ~~~
+~~~
+R28#show dmvpn
+Legend: Attrb --> S - Static, D - Dynamic, I - Incomplete
+        N - NATed, L - Local, X - No Socket
+        # Ent --> Number of NHRP entries with same NBMA peer
+        NHS Status: E --> Expecting Replies, R --> Responding, W --> Waiting
+        UpDn Time --> Up or Down Time for a Tunnel
+==========================================================================
+
+Interface: Tunnel0, IPv4 NHRP Details
+Type:Spoke, NHRP Peers:2,
+
+ # Ent  Peer NBMA Addr Peer Tunnel Add State  UpDn Tm Attrb
+ ----- --------------- --------------- ----- -------- -----
+     1 185.15.145.54        10.0.252.1    UP 01:07:44     S
+     1 85.123.45.18         10.0.252.2    UP    1d00h     S
+R28#show crypto ikev2 sa
+ IPv4 Crypto IKEv2  SA
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+1         15.67.83.114/500      85.123.45.18/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: PSK, Auth verify: PSK
+      Life/Active Time: 86400/3735 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+2         15.67.83.114/500      185.15.145.54/500     none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: PSK, Auth verify: PSK
+      Life/Active Time: 86400/4123 sec
+
+ IPv6 Crypto IKEv2  SA
+~~~
