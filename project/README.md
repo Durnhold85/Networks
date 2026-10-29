@@ -131,3 +131,70 @@
 |Office3| lo0  | 192.168.30.1/24          |192.168.30.0/24         | Gateway        |
 |Office3| lo0  | 192.168.255.30           |                        | Loopback       |
 |Office3| lo0  |                          |192.168.30.0/24         | LAN            |
+
+# Настроим L2 сегмент в офисе HQ.(HSRP,RSTP,Vlan)
+~~~
+SW3#
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 1,30 priority 4096
+spanning-tree vlan 40 priority 16384
+!
+interface Ethernet0/3
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet1/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet1/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Vlan30
+ ip address 10.0.30.2 255.255.255.0
+ standby 30 ip 10.0.30.1
+ standby 30 priority 150
+ standby 30 preempt
+!
+interface Vlan40
+ ip address 10.0.40.2 255.255.255.0
+ standby 40 ip 10.0.40.1
+ standby 40 priority 110
+ standby 40 preempt
+~~~
+~~~
+SW4#
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+spanning-tree vlan 1,30 priority 16384
+spanning-tree vlan 40 priority 4096
+!
+vlan internal allocation policy ascending
+!
+interface Ethernet0/3
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet1/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet1/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Vlan30
+ ip address 10.0.30.3 255.255.255.0
+ standby 30 ip 10.0.30.1
+ standby 30 priority 110
+ standby 30 preempt
+!
+interface Vlan40
+ ip address 10.0.40.3 255.255.255.0
+ standby 40 ip 10.0.40.1
+ standby 40 priority 150
+ standby 40 preempt
+~~~
+
