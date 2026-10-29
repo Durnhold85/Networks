@@ -171,8 +171,6 @@ spanning-tree extend system-id
 spanning-tree vlan 1,30 priority 16384
 spanning-tree vlan 40 priority 4096
 !
-vlan internal allocation policy ascending
-!
 interface Ethernet0/3
  switchport trunk encapsulation dot1q
  switchport mode trunk
