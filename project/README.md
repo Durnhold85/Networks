@@ -132,7 +132,7 @@
 |Office3| lo0  | 192.168.255.30           |                        | Loopback       |
 |Office3| lo0  |                          |192.168.30.0/24         | LAN            |
 
-# Настроим L2 сегмент в офисе HQ.(HSRP,RSTP,Vlan)
+### Настроим L2 сегмент в офисе HQ.(HSRP,RSTP,Vlan)
 ~~~
 SW3#
 spanning-tree mode rapid-pvst
