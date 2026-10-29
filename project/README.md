@@ -226,4 +226,133 @@ ip dhcp pool Vlan40
  default-router 10.0.40.1
 ~~~
 ### Настроим OSPF в офисе HQ.
-
+~~~
+R1#
+router ospf 1
+ router-id 10.0.255.10
+ passive-interface default
+ no passive-interface Ethernet0/1
+ no passive-interface Ethernet0/2
+ default-information originate metric 20
+!
+interface Loopback0
+ ip address 10.0.255.10 255.255.255.255
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+!
+interface Ethernet0/1
+ description to_SW4
+ ip address 10.0.254.5 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/2
+ description to_SW3
+ ip address 10.0.254.1 255.255.255.252
+ ip ospf 1 area 0
+~~~
+~~~
+R2#
+interface Loopback0
+ ip address 10.0.255.20 255.255.255.255
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+!
+interface Ethernet0/1
+ description to_SW3
+ ip address 10.0.254.9 255.255.255.252
+ ip ospf 1 area 0
+!
+interface Ethernet0/2
+ description to_SW4
+ ip address 10.0.254.13 255.255.255.252
+ ip ospf 1 area 0
+!
+router ospf 1
+ router-id 10.0.255.20
+ passive-interface default
+ no passive-interface Ethernet0/1
+ no passive-interface Ethernet0/2
+ default-information originate metric 10
+~~~
+~~~
+SW3#
+interface Loopback0
+ ip address 10.0.255.30 255.255.255.255
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ description to_R2
+ no switchport
+ ip address 10.0.254.10 255.255.255.252
+ ip ospf 1 area 0
+ duplex auto
+!
+interface Ethernet0/1
+ description to_R1
+ no switchport
+ ip address 10.0.254.2 255.255.255.252
+ ip ospf 1 area 0
+ duplex auto
+!
+interface Vlan30
+ ip address 10.0.30.2 255.255.255.0
+ standby 30 ip 10.0.30.1
+ standby 30 priority 150
+ standby 30 preempt
+ ip ospf 1 area 0
+!
+interface Vlan40
+ ip address 10.0.40.2 255.255.255.0
+ standby 40 ip 10.0.40.1
+ standby 40 priority 110
+ standby 40 preempt
+ ip ospf 1 area 0
+!
+router ospf 1
+ router-id 10.0.255.30
+ passive-interface default
+ no passive-interface Ethernet0/0
+ no passive-interface Ethernet0/1
+~~~
+~~~
+SW4#
+interface Loopback0
+ ip address 10.0.255.40 255.255.255.255
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+!
+interface Ethernet0/0
+ description to_R1
+ no switchport
+ ip address 10.0.254.6 255.255.255.252
+ ip ospf 1 area 0
+ duplex auto
+!
+interface Ethernet0/1
+ description to_R2
+ no switchport
+ ip address 10.0.254.14 255.255.255.252
+ ip ospf 1 area 0
+ duplex auto
+!
+interface Vlan30
+ ip address 10.0.30.3 255.255.255.0
+ standby 30 ip 10.0.30.1
+ standby 30 priority 110
+ standby 30 preempt
+ ip ospf 1 area 0
+!
+interface Vlan40
+ ip address 10.0.40.3 255.255.255.0
+ standby 40 ip 10.0.40.1
+ standby 40 priority 150
+ standby 40 preempt
+ ip ospf 1 area 0
+!
+router ospf 1
+ router-id 10.0.255.40
+ passive-interface default
+ no passive-interface Ethernet0/0
+ no passive-interface Ethernet0/1
+~~~
