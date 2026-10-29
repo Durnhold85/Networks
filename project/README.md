@@ -111,18 +111,23 @@
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
 |Office1| e0/0 | 132.185.67.58/30         |132.185.67.56/30        |Office1 to ISP5 |
-|Office1| lo0  | 172.20.255.10            |67.167.89.32/30         | Loopback       |
+|Office1| e0/1 | 172.20.10.1/2            |172.20.10.0/24          | Gateway        |
+|Office1| lo0  | 172.20.255.10            |                        | Loopback       |
+|Office1| LAN  |                          |172.20.10.0/24          | LAN            |
 
 ### Office2
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
 |Office2| e0/0 | 99.15.28.234/30          |99.15.28.232/30         |Office2 to ISP3 |
+|Office2| e0/1 | 172.31.20.1/24           |172.31.20.0/24          | Gateway        |
 |Office2| lo0  | 172.31.255.20            |                        | Loopback       |
-
+|Office2| LAN  |                          |172.31.20.0/24          | LAN            |
 ### Office3
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
 |Office3| e0/0 | 23.156.78.34/30          |23.156.78.32/30         |Office3 to ISP2 |
+|Office3| lo0  | 192.168.30.1/24          |192.168.30.0/24         | Gateway        |
 |Office3| lo0  | 192.168.255.30           |                        | Loopback       |
+|Office3| lo0  |                          |192.168.30.0/24         | LAN            |
