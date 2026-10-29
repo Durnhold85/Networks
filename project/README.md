@@ -195,4 +195,19 @@ interface Vlan40
  standby 40 priority 150
  standby 40 preempt
 ~~~
-
+~~~
+SW3#sh standby brief
+                     P indicates configured to preempt.
+                     |
+Interface   Grp  Pri P State   Active          Standby         Virtual IP
+Vl30        30   150 P Active  local           10.0.30.3       10.0.30.1
+Vl40        40   110 P Standby 10.0.40.3       local           10.0.40.1
+~~~
+~~~
+SW4#show standby brief
+                     P indicates configured to preempt.
+                     |
+Interface   Grp  Pri P State   Active          Standby         Virtual IP
+Vl30        30   110 P Standby 10.0.30.2       local           10.0.30.1
+Vl40        40   150 P Active  local           10.0.40.2       10.0.40.1
+~~~
