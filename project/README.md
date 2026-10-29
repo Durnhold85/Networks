@@ -356,3 +356,28 @@ router ospf 1
  no passive-interface Ethernet0/0
  no passive-interface Ethernet0/1
 ~~~
+Соседство поднялось.
+~~~
+R1#sh ip ospf neighbor
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.30       1   FULL/DR         00:00:39    10.0.254.2      Ethernet0/2
+10.0.255.40       1   FULL/BDR        00:00:36    10.0.254.6      Ethernet0/1
+~~~
+~~~
+R2#sh ip ospf neighbor
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.40       1   FULL/BDR        00:00:33    10.0.254.14     Ethernet0/2
+10.0.255.30       1   FULL/DR         00:00:37    10.0.254.10     Ethernet0/1
+~~~
+~~~
+SW3#sh ip ospf neighbor
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.10       1   FULL/BDR        00:00:39    10.0.254.1      Ethernet0/1
+10.0.255.20       1   FULL/BDR        00:00:37    10.0.254.9      Ethernet0/0
+~~~
+~~~
+SW4#sh ip ospf neighbor
+Neighbor ID     Pri   State           Dead Time   Address         Interface
+10.0.255.10       1   FULL/DR         00:00:32    10.0.254.5      Ethernet0/0
+10.0.255.20       1   FULL/DR         00:00:36    10.0.254.13     Ethernet0/1
+~~~
