@@ -211,3 +211,18 @@ Interface   Grp  Pri P State   Active          Standby         Virtual IP
 Vl30        30   110 P Standby 10.0.30.2       local           10.0.30.1
 Vl40        40   150 P Active  local           10.0.40.2       10.0.40.1
 ~~~
+### Настроим DHCP server на SW3.
+~~~
+SW3#
+ip dhcp excluded-address 10.0.30.1 10.0.30.3
+ip dhcp excluded-address 10.0.40.1 10.0.40.3
+!
+ip dhcp pool Vlan30
+ network 10.0.30.0 255.255.255.0
+ default-router 10.0.30.1
+!
+ip dhcp pool Vlan40
+ network 10.0.40.0 255.255.255.0
+ default-router 10.0.40.1
+!
+~~~
