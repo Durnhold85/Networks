@@ -101,3 +101,7 @@
 |  SW4  | Lo0         | 10.0.255.40/32          |                       | Loopback      |
 |  SW5  | mgmt ip     | 10.0.30.254/24          |10.0.30.0/24           | Management    |
 |  SW6  | mgmt ip     | 10.0.40.254/24          |10.0.40.0/24           | Management    |
+
+Схема HQ.
+
+![](HQ.png)
