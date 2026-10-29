@@ -224,5 +224,4 @@ ip dhcp pool Vlan30
 ip dhcp pool Vlan40
  network 10.0.40.0 255.255.255.0
  default-router 10.0.40.1
-!
 ~~~
