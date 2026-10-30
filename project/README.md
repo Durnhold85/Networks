@@ -459,3 +459,39 @@ router bgp 1249
   neighbor 12.136.47.89 filter-list 1 out
  exit-address-family
 ~~~
+Связность с ISP4 и ISP1 поднялась. 
+~~~
+R1#sh ip bgp sum
+BGP router identifier 10.0.255.10, local AS number 1249
+BGP table version is 28, main routing table version 28
+1 network entries using 140 bytes of memory
+2 path entries using 160 bytes of memory
+2/1 BGP path/bestpath attribute entries using 288 bytes of memory
+2 BGP AS-PATH entries using 48 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 636 total bytes of memory
+BGP activity 18/17 prefixes, 46/44 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+10.0.255.20     4         1249      55      57       28    0    0 00:43:44        1
+45.68.214.6     4          568     153     132       28    0    0 01:51:21        1
+~~~
+~~~
+R2(config)#do sh ip bgp sum
+BGP router identifier 10.0.255.20, local AS number 1249
+BGP table version is 2, main routing table version 2
+1 network entries using 140 bytes of memory
+1 path entries using 80 bytes of memory
+2/1 BGP path/bestpath attribute entries using 288 bytes of memory
+1 BGP AS-PATH entries using 24 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 532 total bytes of memory
+BGP activity 13/12 prefixes, 42/41 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+10.0.255.10     4         1249      56      55        2    0    0 00:43:00        0
+12.136.47.89    4        64606      52      51        2    0    0 00:43:00        1
+~~~
+Настроим связность между остальными ISP.
