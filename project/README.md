@@ -576,3 +576,66 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 138.18.35.213   4        64606     214     215       17    0    0 03:05:27        4
 153.68.28.130   4          492     214     218       17    0    0 03:04:19        3
 ~~~
+### Настроим NAT в офисе HQ.
+~~~
+R1#
+access-list 1 permit 10.0.0.0 0.0.255.255
+!
+ip nat inside source list 1 interface Ethernet0/0 overload
+!
+interface Ethernet0/0
+ description to_ISP1
+ ip address 45.68.214.5 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ description to_SW4
+ ip address 10.0.254.5 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+!
+interface Ethernet0/2
+ description to_SW3
+ ip address 10.0.254.1 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+~~~
+~~~
+R2#
+access-list 1 permit 10.0.0.0 0.0.255.255
+!
+ip nat inside source list 1 interface Ethernet0/0 overload
+!
+interface Ethernet0/0
+ description to_ISP4
+ ip address 12.136.47.90 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ description to_SW3
+ ip address 10.0.254.9 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+!
+interface Ethernet0/2
+ description to_SW4
+ ip address 10.0.254.13 255.255.255.252
+ ip nat inside
+ ip virtual-reassembly in
+ ip ospf 1 area 0
+~~~
+R2(config-if)#do sh ip nat tra
+Pro Inside global      Inside local       Outside local      Outside global
+icmp 12.136.47.90:26022 10.0.40.4:26022   99.15.28.233:26022 99.15.28.233:26022
+icmp 12.136.47.90:26278 10.0.40.4:26278   99.15.28.233:26278 99.15.28.233:26278
+icmp 12.136.47.90:26534 10.0.40.4:26534   99.15.28.233:26534 99.15.28.233:26534
+icmp 12.136.47.90:26790 10.0.40.4:26790   99.15.28.233:26790 99.15.28.233:26790
+icmp 12.136.47.90:27046 10.0.40.4:27046   99.15.28.233:27046 99.15.28.233:27046
+~~~
+
+~~~
