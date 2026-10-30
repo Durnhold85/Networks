@@ -495,3 +495,30 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 12.136.47.89    4        64606      52      51        2    0    0 00:43:00        1
 ~~~
 Настроим связность между остальными ISP.
+~~~
+ISP2#
+router bgp 329
+ bgp log-neighbor-changes
+ network 23.156.78.32 mask 255.255.255.252
+ neighbor 67.167.89.34 remote-as 3892
+ neighbor 74.65.10.13 remote-as 64606
+ neighbor 156.78.22.38 remote-as 492
+ neighbor 189.45.13.30 remote-as 568
+~~~
+~~~
+ISP3#
+router bgp 492
+ bgp log-neighbor-changes
+ network 99.15.28.232 mask 255.255.255.252
+ neighbor 153.68.28.129 remote-as 3892
+ neighbor 156.78.22.37 remote-as 329
+~~~
+~~~
+ISP5#
+router bgp 3892
+ bgp log-neighbor-changes
+ network 132.185.67.56 mask 255.255.255.252
+ neighbor 67.167.89.33 remote-as 329
+ neighbor 138.18.35.213 remote-as 64606
+ neighbor 153.68.28.130 remote-as 492
+~~~
