@@ -667,6 +667,8 @@ ip route 0.0.0.0 0.0.0.0 132.185.67.57
 Office2#
 access-list 1 permit 172.31.0.0 0.0.255.255
 !
+ip nat inside source list 1 interface Ethernet0/0 overload
+!
 ip dhcp pool LAN
  network 172.31.20.0 255.255.255.0
  default-router 172.31.20.1
