@@ -415,3 +415,47 @@ router bgp 64606
  neighbor 74.65.10.14 remote-as 329
  neighbor 138.18.35.214 remote-as 3892
 ~~~
+В офисе HQ настроим связность с провайдерами ISP1 и ISP4, ISP4 сделаем более предпочтительным.
+Уберем транзит через нашу AS.
+~~~
+R1#
+ip as-path access-list 1 permit ^$
+!
+route-map PREPEND-ISP1 permit 10
+ set as-path prepend 1249 1249
+!
+router bgp 1249
+ bgp log-neighbor-changes
+ neighbor 10.0.255.20 remote-as 1249
+ neighbor 10.0.255.20 update-source Loopback0
+ neighbor 45.68.214.6 remote-as 568
+ !
+ address-family ipv4
+  neighbor 10.0.255.20 activate
+  neighbor 10.0.255.20 next-hop-self
+  neighbor 45.68.214.6 activate
+  neighbor 45.68.214.6 route-map PREPEND-ISP1 out
+  neighbor 45.68.214.6 filter-list 1 out
+ exit-address-family
+~~~
+~~~
+R2#
+ip as-path access-list 1 permit ^$
+!
+route-map PREFER-ISP4 permit 10
+ set local-preference 150
+!
+router bgp 1249
+ bgp log-neighbor-changes
+ neighbor 10.0.255.10 remote-as 1249
+ neighbor 10.0.255.10 update-source Loopback0
+ neighbor 12.136.47.89 remote-as 64606
+ !
+ address-family ipv4
+  neighbor 10.0.255.10 activate
+  neighbor 10.0.255.10 next-hop-self
+  neighbor 12.136.47.89 activate
+  neighbor 12.136.47.89 route-map PREFER-ISP4 in
+  neighbor 12.136.47.89 filter-list 1 out
+ exit-address-family
+~~~
