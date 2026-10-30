@@ -522,3 +522,57 @@ router bgp 3892
  neighbor 138.18.35.213 remote-as 64606
  neighbor 153.68.28.130 remote-as 492
 ~~~
+~~~
+ISP2#sh ip bgp summ
+BGP router identifier 189.45.13.29, local AS number 329
+BGP table version is 13, main routing table version 13
+5 network entries using 700 bytes of memory
+10 path entries using 800 bytes of memory
+10/5 BGP path/bestpath attribute entries using 1440 bytes of memory
+9 BGP AS-PATH entries using 216 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 3156 total bytes of memory
+BGP activity 8/3 prefixes, 15/5 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+67.167.89.34    4         3892     217     215       13    0    0 03:05:29        3
+74.65.10.13     4        64606     245     252       13    0    0 03:37:35        2
+156.78.22.38    4          492     268     271       13    0    0 03:54:08        3
+189.45.13.30    4          568     285     289       13    0    0 04:13:11        1
+~~~
+~~~
+ISP3#sh ip bgp sum
+BGP router identifier 156.78.22.38, local AS number 492
+BGP table version is 16, main routing table version 16
+5 network entries using 700 bytes of memory
+9 path entries using 720 bytes of memory
+9/5 BGP path/bestpath attribute entries using 1296 bytes of memory
+8 BGP AS-PATH entries using 192 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 2908 total bytes of memory
+BGP activity 8/3 prefixes, 15/6 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+153.68.28.129   4         3892     219     215       16    0    0 03:05:32        4
+156.78.22.37    4          329     271     269       16    0    0 03:54:44        4
+~~~
+~~~
+ISP5#sh ip bgp sum
+BGP router identifier 153.68.28.129, local AS number 3892
+BGP table version is 17, main routing table version 17
+5 network entries using 700 bytes of memory
+12 path entries using 960 bytes of memory
+12/5 BGP path/bestpath attribute entries using 1728 bytes of memory
+11 BGP AS-PATH entries using 264 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 3652 total bytes of memory
+BGP activity 8/3 prefixes, 17/5 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+67.167.89.33    4          329     215     216       17    0    0 03:04:52        4
+138.18.35.213   4        64606     214     215       17    0    0 03:05:27        4
+153.68.28.130   4          492     214     218       17    0    0 03:04:19        3
+~~~
