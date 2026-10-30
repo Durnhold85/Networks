@@ -382,6 +382,20 @@ Neighbor ID     Pri   State           Dead Time   Address         Interface
 10.0.255.20       1   FULL/DR         00:00:36    10.0.254.13     Ethernet0/1
 ~~~
 ### Настроим связность между провайдерами, а так же настроим подключение офиса HQ к провайдерам по BGP.
-
-
+На ISP1 в сторону HQ(R1) настроим только дефолт.
+~~~
+ISP1#
+ip prefix-list DEFAULT seq 10 permit 0.0.0.0/0
+!
+route-map ADVERTISE-ONLY-DEFAULT permit 10
+ match ip address prefix-list DEFAULT
+!
+router bgp 568
+ bgp log-neighbor-changes
+ network 45.68.214.4 mask 255.255.255.252
+ neighbor 45.68.214.5 remote-as 1249
+ neighbor 45.68.214.5 default-originate
+ neighbor 45.68.214.5 route-map ADVERTISE-ONLY-DEFAULT out
+ neighbor 189.45.13.29 remote-as 329
+~~~
 
