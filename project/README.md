@@ -639,3 +639,27 @@ icmp 12.136.47.90:26790 10.0.40.4:26790   99.15.28.233:26790 99.15.28.233:26790
 icmp 12.136.47.90:27046 10.0.40.4:27046   99.15.28.233:27046 99.15.28.233:27046
 ~~~
 ### Настроим DHCP и NAT в office1,2,3.
+~~~
+office1#
+access-list 1 permit 172.20.0.0 0.0.255.255
+!
+ip nat inside source list 1 interface Ethernet0/0 overload
+!
+ip dhcp pool LAN
+ network 172.20.10.0 255.255.255.0
+ default-router 172.20.10.1
+!
+interface Ethernet0/0
+ description to_ISP5
+ ip address 132.185.67.58 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ description LAN
+ ip address 172.20.10.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+!
+ip route 0.0.0.0 0.0.0.0 132.185.67.57
+~~~
