@@ -687,3 +687,27 @@ interface Ethernet0/1
 !
 ip route 0.0.0.0 0.0.0.0 99.15.28.233
 ~~~
+~~~
+Office3#
+access-list 1 permit 192.168.0.0 0.0.255.255
+!
+ip nat inside source list 1 interface Ethernet0/0 overload
+!
+ip dhcp pool LAN
+ network 192.168.30.0 255.255.255.0
+ default-router 192.168.30.1
+!
+interface Ethernet0/0
+ description to_ISP2
+ ip address 23.156.78.34 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ description LAN
+ ip address 192.168.30.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+!
+ip route 0.0.0.0 0.0.0.0 23.156.78.33
+~~~
