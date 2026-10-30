@@ -663,3 +663,25 @@ interface Ethernet0/1
 !
 ip route 0.0.0.0 0.0.0.0 132.185.67.57
 ~~~
+~~~
+Office2#
+access-list 1 permit 172.31.0.0 0.0.255.255
+!
+ip dhcp pool LAN
+ network 172.31.20.0 255.255.255.0
+ default-router 172.31.20.1
+!
+interface Ethernet0/0
+ description to_ISP3
+ ip address 99.15.28.234 255.255.255.252
+ ip nat outside
+ ip virtual-reassembly in
+!
+interface Ethernet0/1
+ description LAN
+ ip address 172.31.20.1 255.255.255.0
+ ip nat inside
+ ip virtual-reassembly in
+!
+ip route 0.0.0.0 0.0.0.0 99.15.28.233
+~~~
