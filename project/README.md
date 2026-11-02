@@ -392,7 +392,6 @@ route-map ADVERTISE-ONLY-DEFAULT permit 10
 !
 router bgp 568
  bgp log-neighbor-changes
- network 45.68.214.4 mask 255.255.255.252
  neighbor 45.68.214.5 remote-as 1249
  neighbor 45.68.214.5 default-originate
  neighbor 45.68.214.5 route-map ADVERTISE-ONLY-DEFAULT out
@@ -408,7 +407,6 @@ route-map ADVERTISE-ONLY-DEFAULT permit 10
 !
 router bgp 64606
  bgp log-neighbor-changes
- network 12.136.47.88 mask 255.255.255.252
  neighbor 12.136.47.90 remote-as 1249
  neighbor 12.136.47.90 default-originate
  neighbor 12.136.47.90 route-map ADVERTISE-ONLY-DEFAULT out
@@ -431,6 +429,7 @@ router bgp 1249
  neighbor 45.68.214.6 remote-as 568
  !
  address-family ipv4
+  network 45.68.214.4 mask 255.255.255.252
   neighbor 10.0.255.20 activate
   neighbor 10.0.255.20 next-hop-self
   neighbor 45.68.214.6 activate
@@ -452,12 +451,14 @@ router bgp 1249
  neighbor 12.136.47.89 remote-as 64606
  !
  address-family ipv4
+  network 12.136.47.88 mask 255.255.255.252
   neighbor 10.0.255.10 activate
   neighbor 10.0.255.10 next-hop-self
   neighbor 12.136.47.89 activate
   neighbor 12.136.47.89 route-map PREFER-ISP4 in
   neighbor 12.136.47.89 filter-list 1 out
  exit-address-family
+
 ~~~
 Связность с ISP4 и ISP1 поднялась. 
 ~~~
