@@ -947,3 +947,54 @@ CA Certificate
   Associated Trustpoints: CA
   Storage: nvram:R2#1CA.cer
 ~~~
+~~~
+Office3#
+ip host CA 12.136.47.90
+ip host CA.otus.ru 12.136.47.90
+!
+crypto pki trustpoint CA
+ enrollment url http://CA.otus.ru:80
+ serial-number
+ subject-name CN=Office3, O=Otus, C=ru
+ revocation-check crl
+
+Office3#show crypto pki certificates
+Certificate
+  Status: Available
+  Certificate Serial Number (hex): 06
+  Certificate Usage: General Purpose
+  Issuer:
+    cn=R2
+    o=Otus
+    c=ru
+  Subject:
+    Name: Office3
+    Serial Number: 67109024
+    serialNumber=67109024+hostname=Office3
+    cn=Office3
+    o=Otus
+    c=ru
+  Validity Date:
+    start date: 16:05:00 UTC Nov 2 2026
+    end   date: 16:05:00 UTC Nov 2 2027
+  Associated Trustpoints: CA
+  Storage: nvram:R2#6.cer
+
+CA Certificate
+  Status: Available
+  Certificate Serial Number (hex): 01
+  Certificate Usage: Signature
+  Issuer:
+    cn=R2
+    o=Otus
+    c=ru
+  Subject:
+    cn=R2
+    o=Otus
+    c=ru
+  Validity Date:
+    start date: 14:54:31 UTC Nov 2 2026
+    end   date: 14:54:31 UTC Nov 1 2029
+  Associated Trustpoints: CA
+  Storage: nvram:R2#1CA.cer
+~~~
