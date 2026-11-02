@@ -796,3 +796,55 @@ CA Certificate
   Associated Trustpoints: R2 CA
   Storage: nvram:R2#1CA.cer
 ~~~
+~~~
+R1#
+
+ip host CA 10.0.255.20
+ip host CA.otus.ru 10.0.255.20
+!
+crypto pki trustpoint CA
+ enrollment url http://CA.otus.ru:80
+ serial-number
+ subject-name CN=R1, O=Otus, C=ru
+ revocation-check crl
+
+R1#sh crypto pki certificates
+Certificate
+  Status: Available
+  Certificate Serial Number (hex): 02
+  Certificate Usage: General Purpose
+  Issuer:
+    cn=R2
+    o=Otus
+    c=ru
+  Subject:
+    Name: R1
+    Serial Number: 67108880
+    serialNumber=67108880+hostname=R1
+    cn=R1
+    o=Otus
+    c=ru
+  Validity Date:
+    start date: 15:10:44 UTC Nov 2 2026
+    end   date: 15:10:44 UTC Nov 2 2027
+  Associated Trustpoints: CA
+  Storage: nvram:R2#2.cer
+
+CA Certificate
+  Status: Available
+  Certificate Serial Number (hex): 01
+  Certificate Usage: Signature
+  Issuer:
+    cn=R2
+    o=Otus
+    c=ru
+  Subject:
+    cn=R2
+    o=Otus
+    c=ru
+  Validity Date:
+    start date: 14:54:31 UTC Nov 2 2026
+    end   date: 14:54:31 UTC Nov 1 2029
+  Associated Trustpoints: CA
+  Storage: nvram:R2#1CA.cer
+~~~
