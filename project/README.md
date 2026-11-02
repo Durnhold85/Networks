@@ -414,7 +414,7 @@ router bgp 64606
  neighbor 138.18.35.214 remote-as 3892
 ~~~
 В офисе HQ настроим связность с провайдерами ISP1 и ISP4, ISP4 сделаем более предпочтительным.
-Уберем транзит через нашу AS.
+Уберем транзит через нашу AS. Между R1,R2,SW3,SW4 настроим IBGP, на SW3 настроим route-reflector.
 ~~~
 R1#
 ip as-path access-list 1 permit ^$
@@ -424,13 +424,13 @@ route-map PREPEND-ISP1 permit 10
 !
 router bgp 1249
  bgp log-neighbor-changes
- neighbor 10.0.255.20 remote-as 1249
- neighbor 10.0.255.20 update-source Loopback0
+ neighbor 10.0.255.30 remote-as 1249
+ neighbor 10.0.255.30 update-source Loopback0
  neighbor 45.68.214.6 remote-as 568
  !
  address-family ipv4
   network 45.68.214.4 mask 255.255.255.252
-  neighbor 10.0.255.20 activate
+  neighbor 10.0.255.30 activate
   neighbor 10.0.255.20 next-hop-self
   neighbor 45.68.214.6 activate
   neighbor 45.68.214.6 route-map PREPEND-ISP1 out
@@ -446,19 +446,41 @@ route-map PREFER-ISP4 permit 10
 !
 router bgp 1249
  bgp log-neighbor-changes
- neighbor 10.0.255.10 remote-as 1249
- neighbor 10.0.255.10 update-source Loopback0
+ neighbor 10.0.255.30 remote-as 1249
+ neighbor 10.0.255.30 update-source Loopback0
  neighbor 12.136.47.89 remote-as 64606
  !
  address-family ipv4
   network 12.136.47.88 mask 255.255.255.252
-  neighbor 10.0.255.10 activate
-  neighbor 10.0.255.10 next-hop-self
+  neighbor 10.0.255.30 activate
+  neighbor 10.0.255.30 next-hop-self
   neighbor 12.136.47.89 activate
   neighbor 12.136.47.89 route-map PREFER-ISP4 in
   neighbor 12.136.47.89 filter-list 1 out
  exit-address-family
-
+~~~
+~~~
+SW3#
+router bgp 1249
+ bgp log-neighbor-changes
+ neighbor AS1249 peer-group
+ neighbor AS1249 remote-as 1249
+ neighbor AS1249 update-source Loopback0
+ neighbor AS1249 route-reflector-client
+ neighbor 10.0.255.10 peer-group AS1249
+ neighbor 10.0.255.20 peer-group AS1249
+ neighbor 10.0.255.40 peer-group AS1249
+~~~
+~~~
+SW4#
+router bgp 1249
+ bgp log-neighbor-changes
+ neighbor 10.0.255.30 remote-as 1249
+ neighbor 10.0.255.30 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 10.0.255.30 activate
+ exit-address-family
 ~~~
 Связность с ISP4 и ISP1 поднялась. 
 ~~~
