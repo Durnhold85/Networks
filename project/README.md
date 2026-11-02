@@ -896,3 +896,54 @@ CA Certificate
     end   date: 14:54:31 UTC Nov 1 2029
   Associated Trustpoints: CA
 ~~~
+~~~
+Office2#
+ip host CA 12.136.47.90
+ip host CA.otus.ru 12.136.47.90
+!
+crypto pki trustpoint CA
+ enrollment url http://CA.otus.ru:80
+ serial-number
+ subject-name CN=Office2, O=Otus, C=ru
+ revocation-check crl
+
+Office2#sh crypto pki certificates
+Certificate
+  Status: Available
+  Certificate Serial Number (hex): 05
+  Certificate Usage: General Purpose
+  Issuer:
+    cn=R2
+    o=Otus
+    c=ru
+  Subject:
+    Name: Office2
+    Serial Number: 67109008
+    serialNumber=67109008+hostname=Office2
+    cn=Office2
+    o=Otus
+    c=ru
+  Validity Date:
+    start date: 16:02:25 UTC Nov 2 2026
+    end   date: 16:02:25 UTC Nov 2 2027
+  Associated Trustpoints: CA
+  Storage: nvram:R2#5.cer
+
+CA Certificate
+  Status: Available
+  Certificate Serial Number (hex): 01
+  Certificate Usage: Signature
+  Issuer:
+    cn=R2
+    o=Otus
+    c=ru
+  Subject:
+    cn=R2
+    o=Otus
+    c=ru
+  Validity Date:
+    start date: 14:54:31 UTC Nov 2 2026
+    end   date: 14:54:31 UTC Nov 1 2029
+  Associated Trustpoints: CA
+  Storage: nvram:R2#1CA.cer
+~~~
