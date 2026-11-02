@@ -734,3 +734,65 @@ interface Ethernet0/1
 !
 ip route 0.0.0.0 0.0.0.0 23.156.78.33
 ~~~
+# Настроим сервер PKI на R2, получим сертификаты на R1, R2, Office1, Office2, Office3.
+~~~
+R2#
+ip domain name otus.ru
+ip host CA 10.0.255.20
+ip host CA.otus.ru 10.0.255.20
+!
+crypto pki server CA
+ database level complete
+ no database archive
+ issuer-name CN=R2,O=Otus,C=ru
+!
+crypto pki trustpoint CA
+ revocation-check crl
+ rsakeypair CA
+!
+crypto pki trustpoint R2
+ enrollment url http://CA.otus.ru:80
+ serial-number
+ subject-name CN=R2, O=Otus, C=ru
+ revocation-check crl
+
+R2#show crypto pki certificates
+Certificate
+  Status: Available
+  Certificate Serial Number (hex): 03
+  Certificate Usage: General Purpose
+  Issuer:
+    cn=R2
+    o=Otus
+    c=ru
+  Subject:
+    Name: R2.otus.ru
+    Serial Number: 67108896
+    serialNumber=67108896+hostname=R2.otus.ru
+    cn=R2
+    o=Otus
+    c=ru
+  Validity Date:
+    start date: 15:51:49 UTC Nov 2 2026
+    end   date: 15:51:49 UTC Nov 2 2027
+  Associated Trustpoints: R2
+  Storage: nvram:R2#3.cer
+
+CA Certificate
+  Status: Available
+  Certificate Serial Number (hex): 01
+  Certificate Usage: Signature
+  Issuer:
+    cn=R2
+    o=Otus
+    c=ru
+  Subject:
+    cn=R2
+    o=Otus
+    c=ru
+  Validity Date:
+    start date: 14:54:31 UTC Nov 2 2026
+    end   date: 14:54:31 UTC Nov 1 2029
+  Associated Trustpoints: R2 CA
+  Storage: nvram:R2#1CA.cer
+~~~
