@@ -24,7 +24,7 @@
 |office2|172.31.0.0/16|
 |office3|192.168.0.0/16|
 
-### IP адреса соединений между регионами:
+#### IP адреса соединений между регионами:
 | Equip | ipv4 | 
 |-------|------|
 | HQ(R1) - ISP1| 45.68.214.4/30|
@@ -39,14 +39,14 @@
 | ISP4 - ISP5 | 138.18.35.212/30|
 | ISP5 - office1 | 132.185.67.56/30|
 
-### ISP1 AS568
+#### ISP1 AS568
 
 | Equip | Port | Address                  | Network                | Description   |
 |-------|------|--------------------------|------------------------|---------------|
 |  ISP1  | e0/0 | 45.68.214.6/30          |45.68.214.4/30          | ISP1 to HQ(R1)|
 |  ISP1  | e0/1 | 189.45.13.30/30         |189.45.13.28/30         | ISP1 to ISP2  |
 
-### ISP2 AS329
+#### ISP2 AS329
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
@@ -56,7 +56,7 @@
 | ISP2  | e0/3 | 74.65.10.14/30           |74.65.10.12/30          | ISP2 to ISP4   |
 | ISP2  | e1/0 | 23.156.78.33/30          |23.156.78.32/30         | ISP2 to office3|
 
-### ISP3 AS492
+#### ISP3 AS492
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
@@ -64,7 +64,7 @@
 | ISP3  | e0/1 | 153.68.28.130/30         |153.68.28.128/30        | ISP3 to ISP5   |
 | ISP3  | e0/2 | 99.15.28.233/30          |99.15.28.232/30         | ISP3 to office2|
 
-### ISP4 AS64606
+#### ISP4 AS64606
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
@@ -72,7 +72,7 @@
 | ISP4  | e0/1 | 138.18.35.213/30         |138.18.35.212/30        | ISP4 to ISP5   |
 | ISP4  | e0/2 | 74.65.10.13/30           |74.65.10.12/30          | ISP4 to ISP2   | 
 
-### ISP5 AS3892
+#### ISP5 AS3892
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
@@ -81,7 +81,7 @@
 | ISP5  | e0/2 | 132.185.67.57/30         |132.185.67.56/30        | ISP2 to office1|
 | ISP5  | e0/3 | 153.68.28.129/30         |153.68.28.128/30        | ISP5 to ISP3   |
 
-### HQ AS1249
+#### HQ AS1249
 
 | Equip | Port | Address                  | Network                | Description   |
 |-------|------|--------------------------|------------------------|---------------|
@@ -108,7 +108,7 @@
 
 ![](HQ.png)
 
-### Office1
+#### Office1
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
@@ -117,7 +117,7 @@
 |Office1| lo0  | 172.20.255.10            |                        | Loopback       |
 |Office1| LAN  |                          |172.20.10.0/24          | LAN            |
 
-### Office2
+#### Office2
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
@@ -125,7 +125,7 @@
 |Office2| e0/1 | 172.31.20.1/24           |172.31.20.0/24          | Gateway        |
 |Office2| lo0  | 172.31.255.20            |                        | Loopback       |
 |Office2| LAN  |                          |172.31.20.0/24          | LAN            |
-### Office3
+#### Office3
 
 | Equip | Port | Address                  | Network                | Description    |
 |-------|------|--------------------------|------------------------|----------------|
@@ -213,7 +213,7 @@ Interface   Grp  Pri P State   Active          Standby         Virtual IP
 Vl30        30   110 P Standby 10.0.30.2       local           10.0.30.1
 Vl40        40   150 P Active  local           10.0.40.2       10.0.40.1
 ~~~
-### Настроим DHCP server на SW3.
+#### Настроим DHCP server на SW3.
 ~~~
 SW3#
 ip dhcp excluded-address 10.0.30.1 10.0.30.3
@@ -227,7 +227,7 @@ ip dhcp pool Vlan40
  network 10.0.40.0 255.255.255.0
  default-router 10.0.40.1
 ~~~
-### Настроим OSPF в офисе HQ.
+#### Настроим OSPF в офисе HQ.
 ~~~
 R1#
 router ospf 1
@@ -358,7 +358,7 @@ router ospf 1
  no passive-interface Ethernet0/0
  no passive-interface Ethernet0/1
 ~~~
-Соседство поднялось.
+#### Соседство поднялось.
 ~~~
 R1#sh ip ospf neighbor
 Neighbor ID     Pri   State           Dead Time   Address         Interface
@@ -484,7 +484,7 @@ router bgp 1249
   neighbor 10.0.255.30 activate
  exit-address-family
 ~~~
-Связность с ISP4 и ISP1 поднялась. 
+#### Связность с ISP4 и ISP1 поднялась. 
 ~~~
 R1#sh ip bgp sum
 BGP router identifier 10.0.255.10, local AS number 1249
@@ -519,7 +519,7 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 10.0.255.10     4         1249      56      55        2    0    0 00:43:00        0
 12.136.47.89    4        64606      52      51        2    0    0 00:43:00        1
 ~~~
-Настроим связность между остальными ISP.
+#### Настроим связность между остальными ISP.
 ~~~
 ISP2#
 router bgp 329
@@ -1412,6 +1412,7 @@ Tunnel-id Local                 Remote                fvrf/ivrf            Statu
 ~~~
 ### Настроим маршрутизацию через DMVPN. Протокол маршрутизации BGP(IBGP).
 На маршрутизаторах R1 и R2 настроим статический маршруты, создадим префикс листы и route-map.
+~~~~
 ip route 10.0.0.0 255.255.0.0 Null0
 ip route 172.20.0.0 255.255.0.0 Null0
 ip route 172.31.0.0 255.255.0.0 Null0
@@ -1424,9 +1425,9 @@ ip prefix-list LOCAL seq 25 permit 172.20.0.0/16
 !
 route-map SPOKE_ROUTERS permit 10
  match ip address prefix-list LOCAL
-
+~~~~
 #### Создадим префикс листы на OUT к провайдерам ISP1 и ISP4 чтобы наши сети приходящийе по IBGP не анонсировались провайдерам.
-
+~~~
 ip prefix-list OUT seq 5 permit 12.136.47.88/30
 ip prefix-list OUT seq 10 permit 45.68.214.4/30
-
+~~~
