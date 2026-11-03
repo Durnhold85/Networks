@@ -736,7 +736,7 @@ interface Ethernet0/1
 !
 ip route 0.0.0.0 0.0.0.0 23.156.78.33
 ~~~
-### Настроим сервер PKI на R2, получим сертификаты на R1, R2, Office1, Office2, Office3.
+### Настроим NTP и PKI сервер на R2, получим сертификаты на R1, R2, Office1, Office2, Office3.
 ~~~
 R2#
 ip domain name otus.ru
