@@ -1431,3 +1431,33 @@ route-map SPOKE_ROUTERS permit 10
 ip prefix-list OUT seq 5 permit 12.136.47.88/30
 ip prefix-list OUT seq 10 permit 45.68.214.4/30
 ~~~
+#### Настроим IBGP для DMVPN и привяжем префик лист OUT к EBGP соседям.
+
+~~~
+R1#
+router bgp 1249
+bgp listen range 10.0.252.0/24 peer-group SPOKES
+ neighbor SPOKES peer-group
+ neighbor SPOKES remote-as 1249
+!
+ address-family ipv4
+  redistribute static route-map SPOKE_ROUTERS
+  neighbor SPOKES activate
+  neighbor SPOKES route-reflector-client
+  neighbor SPOKES route-map SPOKE_ROUTERS out
+  neighbor 45.68.214.6 prefix-list OUT out
+~~~
+~~~
+R2#
+router bgp 1249
+bgp listen range 10.0.252.0/24 peer-group SPOKES
+ neighbor SPOKES peer-group
+ neighbor SPOKES remote-as 1249
+!
+ address-family ipv4
+  redistribute static route-map SPOKE_ROUTERS
+  neighbor SPOKES activate
+  neighbor SPOKES route-reflector-client
+  neighbor SPOKES route-map SPOKE_ROUTERS out
+  neighbor 12.136.47.89 prefix-list OUT out
+~~~
