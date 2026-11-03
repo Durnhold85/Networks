@@ -1490,3 +1490,79 @@ router bgp 1249
  neighbor 10.0.252.1 remote-as 1249
  neighbor 10.0.252.2 remote-as 1249
 ~~~
+#### Соседство с HUB поднялось.
+~~~
+Office1#sh ip bgp sum
+BGP router identifier 172.20.255.10, local AS number 1249
+BGP table version is 37, main routing table version 37
+6 network entries using 840 bytes of memory
+10 path entries using 800 bytes of memory
+2/2 BGP path/bestpath attribute entries using 288 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1928 total bytes of memory
+BGP activity 20/14 prefixes, 46/36 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+10.0.252.1      4         1249     228     230       37    0    0 03:22:19        4
+10.0.252.2      4         1249     228     232       37    0    0 03:21:41        4
+~~~
+~~~
+~~~
+~~~
+Office3#sh ip bgp sum
+BGP router identifier 192.168.255.30, local AS number 1249
+BGP table version is 38, main routing table version 38
+6 network entries using 840 bytes of memory
+10 path entries using 800 bytes of memory
+2/2 BGP path/bestpath attribute entries using 288 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1928 total bytes of memory
+BGP activity 10/4 prefixes, 26/16 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+10.0.252.1      4         1249     214     212       38    0    0 03:09:09        4
+10.0.252.2      4         1249     213     214       38    0    0 03:09:04        4
+~~~
+Проверим маршруты.
+~~~
+Office3#sh ip ro
+Gateway of last resort is 23.156.78.33 to network 0.0.0.0
+
+S*    0.0.0.0/0 [1/0] via 23.156.78.33
+      10.0.0.0/8 is variably subnetted, 3 subnets, 3 masks
+B        10.0.0.0/16 [200/0] via 10.0.252.2, 03:09:30
+C        10.0.252.0/24 is directly connected, Tunnel0
+L        10.0.252.5/32 is directly connected, Tunnel0
+      23.0.0.0/8 is variably subnetted, 2 subnets, 2 masks
+C        23.156.78.32/30 is directly connected, Ethernet0/0
+L        23.156.78.34/32 is directly connected, Ethernet0/0
+B     172.20.0.0/16 [200/0] via 10.0.252.2, 03:09:30
+B     172.31.0.0/16 [200/0] via 10.0.252.2, 03:09:30
+B     192.168.0.0/16 [200/0] via 10.0.252.2, 03:09:30
+      192.168.30.0/24 is variably subnetted, 2 subnets, 2 masks
+C        192.168.30.0/24 is directly connected, Ethernet0/1
+L        192.168.30.1/32 is directly connected, Ethernet0/1
+      192.168.255.0/32 is subnetted, 1 subnets
+C        192.168.255.30 is directly connected, Loopback0
+~~~
+#### Пропингуем Loopback office2
+~~~
+Office3#ping 172.31.255.20
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 172.31.255.20, timeout is 2 seconds:
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 4/4/5 ms
+~~~
+DMVPN работаетю
+~~~
+Office3#sh ip ro nhrp
+Gateway of last resort is 23.156.78.33 to network 0.0.0.0
+
+      10.0.0.0/8 is variably subnetted, 4 subnets, 3 masks
+H        10.0.252.4/32 is directly connected, 00:00:49, Tunnel0
+      172.31.0.0/16 is variably subnetted, 2 subnets, 2 masks
+H        172.31.255.20/32 [250/1] via 10.0.252.4, 00:00:49, Tunnel0
+
+~~~
