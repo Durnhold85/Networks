@@ -1136,3 +1136,48 @@ interface Tunnel0
  tunnel mode gre multipoint
  tunnel protection ipsec profile DMVPN-IPSEC
 ~~~
+~~~
+Office2#
+crypto ikev2 proposal DMVPN-PROPOSAL
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+!
+crypto ikev2 policy 10
+ proposal DMVPN-PROPOSAL
+!
+!
+crypto ikev2 profile DMVPN-PROFILE
+ match identity remote address 0.0.0.0
+ authentication remote rsa-sig
+ authentication local rsa-sig
+ pki trustpoint CA
+ dpd 10 3 periodic
+!
+!
+!
+crypto ipsec transform-set DMVPN-TS esp-aes 256 esp-sha256-hmac
+ mode transport
+!
+crypto ipsec profile DMVPN-IPSEC
+ set transform-set DMVPN-TS
+ set ikev2-profile DMVPN-PROFILE
+!
+interface Tunnel0
+ description DMVPN to Hub
+ ip address 10.0.252.4 255.255.255.0
+ no ip redirects
+ ip mtu 1400
+ ip nhrp map 10.0.252.1 12.136.47.90
+ ip nhrp map multicast 12.136.47.90
+ ip nhrp map 10.0.252.2 45.68.214.5
+ ip nhrp map multicast 45.68.214.5
+ ip nhrp network-id 100
+ ip nhrp nhs 10.0.252.1 priority 1 cluster 1
+ ip nhrp nhs 10.0.252.2 priority 2 cluster 1
+ ip nhrp shortcut
+ ip tcp adjust-mss 1360
+ tunnel source Ethernet0/0
+ tunnel mode gre multipoint
+ tunnel protection ipsec profile DMVPN-IPSEC
+~~~
