@@ -739,6 +739,8 @@ ip route 0.0.0.0 0.0.0.0 23.156.78.33
 ### Настроим NTP и PKI сервер на R2, получим сертификаты на R1, R2, Office1, Office2, Office3.
 ~~~
 R2#
+ntp master 1
+!
 ip domain name otus.ru
 ip host CA 10.0.255.20
 ip host CA.otus.ru 10.0.255.20
@@ -800,6 +802,8 @@ CA Certificate
 ~~~
 ~~~
 R1#
+ntp server 10.0.255.20
+!
 ip host CA 10.0.255.20
 ip host CA.otus.ru 10.0.255.20
 !
@@ -851,6 +855,8 @@ CA Certificate
 ~~~
 ~~~
 Office1#
+ntp server 12.136.47.90
+!
 ip host CA 12.136.47.90
 ip host CA.otus.ru 12.136.47.90
 !
@@ -900,6 +906,8 @@ CA Certificate
 ~~~
 ~~~
 Office2#
+ntp server 12.136.47.90
+!
 ip host CA 12.136.47.90
 ip host CA.otus.ru 12.136.47.90
 !
@@ -951,6 +959,8 @@ CA Certificate
 ~~~
 ~~~
 Office3#
+ntp server 12.136.47.90
+!
 ip host CA 12.136.47.90
 ip host CA.otus.ru 12.136.47.90
 !
