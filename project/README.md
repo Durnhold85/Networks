@@ -1525,7 +1525,7 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 10.0.252.1      4         1249     214     212       38    0    0 03:09:09        4
 10.0.252.2      4         1249     213     214       38    0    0 03:09:04        4
 ~~~
-Проверим маршруты.
+#### Проверим маршруты.
 ~~~
 Office3#sh ip ro
 Gateway of last resort is 23.156.78.33 to network 0.0.0.0
@@ -1547,7 +1547,7 @@ L        192.168.30.1/32 is directly connected, Ethernet0/1
       192.168.255.0/32 is subnetted, 1 subnets
 C        192.168.255.30 is directly connected, Loopback0
 ~~~
-#### Пропингуем Loopback office2
+#### Пропингуем Loopback office2.
 ~~~
 Office3#ping 172.31.255.20
 Type escape sequence to abort.
@@ -1555,7 +1555,7 @@ Sending 5, 100-byte ICMP Echos to 172.31.255.20, timeout is 2 seconds:
 !!!!!
 Success rate is 100 percent (5/5), round-trip min/avg/max = 4/4/5 ms
 ~~~
-DMVPN работаетю
+#### DMVPN работает.
 ~~~
 Office3#sh ip ro nhrp
 Gateway of last resort is 23.156.78.33 to network 0.0.0.0
