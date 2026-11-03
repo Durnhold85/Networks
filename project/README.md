@@ -1013,6 +1013,11 @@ CA Certificate
 ### Настроим DMVPN и IPSec.
 ~~~
 R1#
+crypto ikev2 proposal DMVPN-PROPOSAL
+ encryption aes-cbc-256
+ integrity sha256
+ group 14
+!
 crypto ikev2 policy 10
  proposal DMVPN-PROPOSAL
 !
