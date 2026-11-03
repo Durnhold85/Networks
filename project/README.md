@@ -1461,3 +1461,32 @@ bgp listen range 10.0.252.0/24 peer-group SPOKES
   neighbor SPOKES route-map SPOKE_ROUTERS out
   neighbor 12.136.47.89 prefix-list OUT out
 ~~~
+#### Настроим IBGP в филиалах.
+~~~
+Office1#
+router bgp 1249
+ bgp router-id 172.20.255.10
+ bgp log-neighbor-changes
+ network 172.20.10.0 mask 255.255.255.0
+ network 172.20.255.10 mask 255.255.255.255
+ neighbor 10.0.252.1 remote-as 1249
+ neighbor 10.0.252.2 remote-as 1249
+~~~
+~~~
+router bgp 1249
+ bgp router-id 172.31.255.20
+ bgp log-neighbor-changes
+ network 172.31.20.0 mask 255.255.255.0
+ network 172.31.255.20 mask 255.255.255.255
+ neighbor 10.0.252.1 remote-as 1249
+ neighbor 10.0.252.2 remote-as 1249
+~~~
+~~~
+router bgp 1249
+ bgp router-id 192.168.255.30
+ bgp log-neighbor-changes
+ network 192.168.30.0
+ network 192.168.255.30 mask 255.255.255.255
+ neighbor 10.0.252.1 remote-as 1249
+ neighbor 10.0.252.2 remote-as 1249
+~~~
