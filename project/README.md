@@ -1302,3 +1302,111 @@ Tunnel-id Local                 Remote                fvrf/ivrf            Statu
 
  IPv6 Crypto IKEv2  SA
 ~~~
+~~~
+Office1#sh dmvpn
+Legend: Attrb --> S - Static, D - Dynamic, I - Incomplete
+        N - NATed, L - Local, X - No Socket
+        # Ent --> Number of NHRP entries with same NBMA peer
+        NHS Status: E --> Expecting Replies, R --> Responding, W --> Waiting
+        UpDn Time --> Up or Down Time for a Tunnel
+==========================================================================
+
+Interface: Tunnel0, IPv4 NHRP Details
+Type:Spoke, NHRP Peers:3,
+
+ # Ent  Peer NBMA Addr Peer Tunnel Add State  UpDn Tm Attrb
+ ----- --------------- --------------- ----- -------- -----
+     1 12.136.47.90         10.0.252.1    UP 02:14:33     S
+     1 45.68.214.5          10.0.252.2    UP 02:14:33     S
+     2 23.156.78.34         10.0.252.5    UP 01:38:31   DT1
+                            10.0.252.5    UP 01:38:31   DT1
+
+Office1#show cryp ikev2 sa
+ IPv4 Crypto IKEv2  SA
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+3         132.185.67.58/500     23.156.78.34/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/5920 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+1         132.185.67.58/500     45.68.214.5/500       none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/8083 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+2         132.185.67.58/500     12.136.47.90/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/8083 sec
+~~~
+~~~
+Office2#sho dmvpn
+Legend: Attrb --> S - Static, D - Dynamic, I - Incomplete
+        N - NATed, L - Local, X - No Socket
+        # Ent --> Number of NHRP entries with same NBMA peer
+        NHS Status: E --> Expecting Replies, R --> Responding, W --> Waiting
+        UpDn Time --> Up or Down Time for a Tunnel
+==========================================================================
+
+Interface: Tunnel0, IPv4 NHRP Details
+Type:Spoke, NHRP Peers:2,
+
+ # Ent  Peer NBMA Addr Peer Tunnel Add State  UpDn Tm Attrb
+ ----- --------------- --------------- ----- -------- -----
+     1 12.136.47.90         10.0.252.1    UP 02:10:10     S
+     1 45.68.214.5          10.0.252.2    UP    1d00h     S
+
+Office2#sho crypto ikev2 sa
+ IPv4 Crypto IKEv2  SA
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+1         99.15.28.234/500      12.136.47.90/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7818 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+2         99.15.28.234/500      45.68.214.5/500       none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7788 sec
+
+ IPv6 Crypto IKEv2  SA
+~~~
+~~~
+Office3#show dmvpn
+Legend: Attrb --> S - Static, D - Dynamic, I - Incomplete
+        N - NATed, L - Local, X - No Socket
+        # Ent --> Number of NHRP entries with same NBMA peer
+        NHS Status: E --> Expecting Replies, R --> Responding, W --> Waiting
+        UpDn Time --> Up or Down Time for a Tunnel
+==========================================================================
+
+Interface: Tunnel0, IPv4 NHRP Details
+Type:Spoke, NHRP Peers:3,
+
+ # Ent  Peer NBMA Addr Peer Tunnel Add State  UpDn Tm Attrb
+ ----- --------------- --------------- ----- -------- -----
+     1 12.136.47.90         10.0.252.1    UP 02:06:52     S
+     1 45.68.214.5          10.0.252.2    UP 02:06:22     S
+     2 132.185.67.58        10.0.252.3    UP 01:39:59   DT1
+                            10.0.252.3    UP 01:39:59   DT1
+
+Office3#show crypto ikev2 sa
+ IPv4 Crypto IKEv2  SA
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+1         23.156.78.34/500      12.136.47.90/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7620 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+2         23.156.78.34/500      45.68.214.5/500       none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7590 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+3         23.156.78.34/500      132.185.67.58/500     none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/6007 sec
+
+ IPv6 Crypto IKEv2  SA
+~~~
