@@ -1411,3 +1411,22 @@ Tunnel-id Local                 Remote                fvrf/ivrf            Statu
  IPv6 Crypto IKEv2  SA
 ~~~
 ### Настроим маршрутизацию через DMVPN. Протокол маршрутизации BGP(IBGP).
+На маршрутизаторах R1 и R2 настроим статический маршруты, создадим префикс листы и route-map.
+ip route 10.0.0.0 255.255.0.0 Null0
+ip route 172.20.0.0 255.255.0.0 Null0
+ip route 172.31.0.0 255.255.0.0 Null0
+ip route 192.168.0.0 255.255.0.0 Null0
+!
+ip prefix-list LOCAL seq 5 permit 10.0.0.0/16
+ip prefix-list LOCAL seq 10 permit 172.31.0.0/16
+ip prefix-list LOCAL seq 15 permit 192.168.0.0/16
+ip prefix-list LOCAL seq 25 permit 172.20.0.0/16
+!
+route-map SPOKE_ROUTERS permit 10
+ match ip address prefix-list LOCAL
+
+#### Создадим префикс листы на OUT к провайдерам ISP1 и ISP4 чтобы наши сети приходящийе по IBGP не анонсировались провайдерам.
+
+ip prefix-list OUT seq 5 permit 12.136.47.88/30
+ip prefix-list OUT seq 10 permit 45.68.214.4/30
+
