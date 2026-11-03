@@ -1226,3 +1226,79 @@ interface Tunnel0
  tunnel mode gre multipoint
  tunnel protection ipsec profile DMVPN-IPSEC
 ~~~
+~~~
+R1#sh dmvpn
+Legend: Attrb --> S - Static, D - Dynamic, I - Incomplete
+        N - NATed, L - Local, X - No Socket
+        # Ent --> Number of NHRP entries with same NBMA peer
+        NHS Status: E --> Expecting Replies, R --> Responding, W --> Waiting
+        UpDn Time --> Up or Down Time for a Tunnel
+==========================================================================
+
+Interface: Tunnel0, IPv4 NHRP Details
+Type:Hub, NHRP Peers:3,
+
+ # Ent  Peer NBMA Addr Peer Tunnel Add State  UpDn Tm Attrb
+ ----- --------------- --------------- ----- -------- -----
+     1 132.185.67.58        10.0.252.3    UP 02:06:14     D
+     1 99.15.28.234         10.0.252.4    UP 02:00:33     D
+     1 23.156.78.34         10.0.252.5    UP 01:56:35     D
+
+R1#sh crypto ikev2 sa
+ IPv4 Crypto IKEv2  SA
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+2         45.68.214.5/500       99.15.28.234/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7240 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+1         45.68.214.5/500       132.185.67.58/500     none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7582 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+3         45.68.214.5/500       23.156.78.34/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7002 sec
+
+ IPv6 Crypto IKEv2  SA
+~~~
+~~~
+R2#sh dmvpn
+Legend: Attrb --> S - Static, D - Dynamic, I - Incomplete
+        N - NATed, L - Local, X - No Socket
+        # Ent --> Number of NHRP entries with same NBMA peer
+        NHS Status: E --> Expecting Replies, R --> Responding, W --> Waiting
+        UpDn Time --> Up or Down Time for a Tunnel
+==========================================================================
+
+Interface: Tunnel0, IPv4 NHRP Details
+Type:Hub, NHRP Peers:3,
+
+ # Ent  Peer NBMA Addr Peer Tunnel Add State  UpDn Tm Attrb
+ ----- --------------- --------------- ----- -------- -----
+     1 132.185.67.58        10.0.252.3    UP 02:12:34     D
+     1 99.15.28.234         10.0.252.4    UP 02:07:24     D
+     1 23.156.78.34         10.0.252.5    UP 02:03:25     D
+
+R2#show crypto ikev2 sa
+ IPv4 Crypto IKEv2  SA
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+1         12.136.47.90/500      132.185.67.58/500     none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7965 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+3         12.136.47.90/500      23.156.78.34/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7415 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+2         12.136.47.90/500      99.15.28.234/500      none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA256, Hash: SHA256, DH Grp:14, Auth sign: RSA, Auth verify: RSA
+      Life/Active Time: 86400/7653 sec
+
+ IPv6 Crypto IKEv2  SA
+~~~
