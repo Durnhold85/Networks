@@ -54,13 +54,11 @@ router bgp 101
  neighbor 2001:DB8:1:14::1 remote-as 1001
  neighbor 2001:DB8:2:12::2 remote-as 301
  neighbor 2001:DB8:2:23::2 remote-as 520
- neighbor 2001:DB8:3:1::2 remote-as 301
  !
  address-family ipv6
   neighbor 2001:DB8:1:14::1 activate
   neighbor 2001:DB8:2:12::2 activate
   neighbor 2001:DB8:2:23::2 activate
-  neighbor 2001:DB8:3:1::2 activate
  exit-address-family
 ~~~
 ISP Ламас
@@ -79,4 +77,83 @@ router bgp 301
   neighbor 2001:DB8:2:34::2 activate
  exit-address-family
 ~~~
+Проверим, соседство по BGP ipv6 поднялось.
+~~~
+R14#show bgp ipv6 unicast summary
+BGP router identifier 10.0.255.14, local AS number 1001
+BGP table version is 5, main routing table version 5
+3 network entries using 492 bytes of memory
+4 path entries using 416 bytes of memory
+4/3 BGP path/bestpath attribute entries using 576 bytes of memory
+4 BGP AS-PATH entries using 112 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1596 total bytes of memory
+BGP activity 32/0 prefixes, 38/0 paths, scan interval 60 secs
 
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2001:DB8:1:14::2
+                4          101     527     523        5    0    0 07:53:08        1
+2001:DB8:10::15 4         1001     521     524        5    0    0 07:52:11        2
+~~~
+~~~
+R15#sh bgp ipv6 unicast summary
+BGP router identifier 10.0.255.15, local AS number 1001
+BGP table version is 4, main routing table version 4
+3 network entries using 492 bytes of memory
+3 path entries using 312 bytes of memory
+3/3 BGP path/bestpath attribute entries using 432 bytes of memory
+2 BGP rrinfo entries using 48 bytes of memory
+2 BGP AS-PATH entries using 48 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1332 total bytes of memory
+BGP activity 32/0 prefixes, 40/1 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2001:DB8:2:15::2
+                4          301     498     494        4    0    0 07:27:29        1
+2001:DB8:10::14 4         1001     525     523        4    0    0 07:53:10        1
+~~~
+~~~
+R22(config)#do sh bgp ipv6 unicast summary
+BGP router identifier 193.12.255.22, local AS number 101
+BGP table version is 4, main routing table version 4
+3 network entries using 492 bytes of memory
+6 path entries using 624 bytes of memory
+5/3 BGP path/bestpath attribute entries using 720 bytes of memory
+11 BGP AS-PATH entries using 296 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 2132 total bytes of memory
+BGP activity 82/41 prefixes, 214/107 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2001:DB8:1:14::1
+                4         1001       9       7        4    0    0 00:01:58        3
+2001:DB8:2:12::2
+                4          301      10       8        4    0    0 00:01:58        3
+2001:DB8:2:23::2
+                4          520       6       8        4    0    0 00:01:58        0
+~~~
+~~~
+R21#sh bgp ipv6 unicast summary
+BGP router identifier 37.24.255.21, local AS number 301
+BGP table version is 4, main routing table version 4
+3 network entries using 492 bytes of memory
+5 path entries using 520 bytes of memory
+4/3 BGP path/bestpath attribute entries using 576 bytes of memory
+8 BGP AS-PATH entries using 192 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1780 total bytes of memory
+BGP activity 41/0 prefixes, 57/2 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2001:DB8:2:12::1
+                4          101     217     218        4    0    0 03:13:05        2
+2001:DB8:2:15::1
+                4         1001     492     496        4    0    0 07:25:52        2
+2001:DB8:2:34::2
+                4          520     115     115        4    0    0 01:41:07        1
+~~~
