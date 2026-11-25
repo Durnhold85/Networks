@@ -11,7 +11,7 @@
 7. Настроить iBGP IPv6 unicast в провайдере Триада, с использованием RR.
 8. Все офисы в лабораторной работе должны иметь IP связность.
 
-### Настроим eBGP между Москвой, ISP Киторн и ISP Ламас. Так же настроим iBGP между R14 и R15 в Москве.
+### Настроим eBGP между Москвой, ISP Киторн и ISP Ламас, между ISP Киторн и ISP Ламас, а так же настроим iBGP между R14 и R15 в Москве.
 Москва.
 ~~~
 R14#
@@ -63,5 +63,20 @@ router bgp 101
   neighbor 2001:DB8:3:1::2 activate
  exit-address-family
 ~~~
-
+ISP Ламас
+~~~
+R21#
+router bgp 301
+ bgp router-id 37.24.255.21
+ bgp log-neighbor-changes
+ neighbor 2001:DB8:2:12::1 remote-as 101
+ neighbor 2001:DB8:2:15::1 remote-as 1001
+ neighbor 2001:DB8:2:34::2 remote-as 520
+ !
+ address-family ipv6
+  neighbor 2001:DB8:2:12::1 activate
+  neighbor 2001:DB8:2:15::1 activate
+  neighbor 2001:DB8:2:34::2 activate
+ exit-address-family
+~~~
 
