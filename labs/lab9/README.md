@@ -12,4 +12,36 @@
 8. Все офисы в лабораторной работе должны иметь IP связность.
 
 ### Настроим eBGP между Москвой, ISP Киторн и ISP Ламас. Так же настроим iBGP между R14 и R15 в Москве.
-
+Москва.
+~~~
+R14#
+router bgp 1001
+ bgp router-id 10.0.255.14
+ bgp log-neighbor-changes
+ neighbor 2001:DB8:1:14::2 remote-as 101
+ neighbor 2001:DB8:10::15 remote-as 1001
+ neighbor 2001:DB8:10::15 update-source Loopback0
+ !
+ address-family ipv6
+  network 2001:DB8:10::14/128
+  neighbor 2001:DB8:1:14::2 activate
+  neighbor 2001:DB8:10::15 activate
+  neighbor 2001:DB8:10::15 next-hop-self
+ exit-address-family
+~~~
+~~~
+R15#
+router bgp 1001
+ bgp router-id 10.0.255.15
+ bgp log-neighbor-changes
+ neighbor 2001:DB8:2:15::2 remote-as 301
+ neighbor 2001:DB8:10::14 remote-as 1001
+ neighbor 2001:DB8:10::14 update-source Loopback0
+ !
+ address-family ipv6
+  network 2001:DB8:10::15/128
+  neighbor 2001:DB8:2:15::2 activate
+  neighbor 2001:DB8:10::14 activate
+  neighbor 2001:DB8:10::14 next-hop-self
+ exit-address-family
+~~~
