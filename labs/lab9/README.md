@@ -45,3 +45,23 @@ router bgp 1001
   neighbor 2001:DB8:10::14 next-hop-self
  exit-address-family
 ~~~
+ISP Киторн
+~~~
+R22#
+router bgp 101
+ bgp router-id 193.12.255.22
+ bgp log-neighbor-changes
+ neighbor 2001:DB8:1:14::1 remote-as 1001
+ neighbor 2001:DB8:2:12::2 remote-as 301
+ neighbor 2001:DB8:2:23::2 remote-as 520
+ neighbor 2001:DB8:3:1::2 remote-as 301
+ !
+ address-family ipv6
+  neighbor 2001:DB8:1:14::1 activate
+  neighbor 2001:DB8:2:12::2 activate
+  neighbor 2001:DB8:2:23::2 activate
+  neighbor 2001:DB8:3:1::2 activate
+ exit-address-family
+~~~
+
+
