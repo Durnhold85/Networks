@@ -237,3 +237,85 @@ router bgp 2042
   neighbor 2001:DB8:3:35::1 activate
  exit-address-family
 ~~~
+Проверим, eBGP и iBGP сесси поднялись.
+~~~
+R18#sh bgp ipv6 unicast summary
+BGP router identifier 172.20.255.18, local AS number 2042
+BGP table version is 4, main routing table version 4
+3 network entries using 492 bytes of memory
+3 path entries using 312 bytes of memory
+2/2 BGP path/bestpath attribute entries using 288 bytes of memory
+4 BGP AS-PATH entries using 96 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1188 total bytes of memory
+BGP activity 40/0 prefixes, 76/1 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2001:DB8:3:34::1
+                4          520    1183    1177        4    0    0 17:47:30        2
+2001:DB8:3:35::1
+                4          520    1178    1182        4    0    0 17:47:35        0
+~~~
+~~~
+R25#sh bgp ipv6 unicast summary
+BGP router identifier 10.100.255.25, local AS number 520
+BGP table version is 1, main routing table version 1
+3 network entries using 492 bytes of memory
+6 path entries using 624 bytes of memory
+3/0 BGP path/bestpath attribute entries using 432 bytes of memory
+5 BGP AS-PATH entries using 120 bytes of memory
+0 BGP route-map cache entries using 0 bytes of memory
+0 BGP filter-list cache entries using 0 bytes of memory
+BGP using 1668 total bytes of memory
+BGP activity 40/0 prefixes, 51/6 paths, scan interval 60 secs
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+2001:DB8:3:23::1
+                4          520    1224    1217        1    0    0 18:25:07        2
+2001:DB8:3:24::1
+                4          520    1226    1217        1    0    0 18:25:12        3
+2001:DB8:3:26::1
+                4          520    1221    1218        1    0    0 18:25:07        1
+~~~
+
+На R18 Санкт-Петербург и R14 R15 Москва, анонсированы Loopbackб в таблице маршрутизации они есть, првоерим связность Москвы и Санкт - Петербурга.
+~~~
+R14#sh run in lo0
+interface Loopback0
+ ip address 10.0.255.14 255.255.255.255
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ ipv6 address 2001:DB8:10::14/128
+ ipv6 enable
+ ipv6 ospf 1 area 0
+end
+ !
+ address-family ipv6
+  network 2001:DB8:10::14/128
+~~~
+~~~
+R15#sh run int lo0
+interface Loopback0
+ ip address 10.0.255.15 255.255.255.255
+ ip ospf network point-to-point
+ ip ospf 1 area 0
+ ipv6 address 2001:DB8:10::15/128
+ ipv6 enable
+ ipv6 ospf 1 area 0
+end
+!
+ address-family ipv6
+  network 2001:DB8:10::15/128
+~~~
+~~~
+R18#sh run int lo0
+interface Loopback0
+ ip address 172.20.255.18 255.255.255.255
+ ipv6 address 2001:DB8:4:1::1/128
+ ipv6 enable
+end
+ !
+ address-family ipv6
+  network 2001:DB8:4:1::1/128
+~~~
