@@ -173,5 +173,40 @@ router bgp 520
  exit-address-family
 ~~~
 ~~~
-
+R24#sh run | sec bgp
+router bgp 520
+ bgp router-id 10.100.255.24
+ bgp log-neighbor-changes
+ neighbor 2001:DB8:2:34::1 remote-as 301
+ neighbor 2001:DB8:3:25::1 remote-as 520
+ neighbor 2001:DB8:3:25::1 update-source Loopback0
+ neighbor 2001:DB8:3:34::2 remote-as 2042
+ !
+ address-family ipv6
+  neighbor 2001:DB8:2:34::1 activate
+  neighbor 2001:DB8:3:25::1 activate
+  neighbor 2001:DB8:3:34::2 activate
+ exit-address-family
+~~~
+~~~
+R25#sh run | sec bgp
+router bgp 520
+ bgp router-id 10.100.255.25
+ bgp log-neighbor-changes
+ neighbor AS520_ipv6 peer-group
+ neighbor AS520_ipv6 remote-as 520
+ neighbor AS520_ipv6 update-source Loopback0
+ neighbor 2001:DB8:3:23::1 peer-group AS520_ipv6
+ neighbor 2001:DB8:3:24::1 peer-group AS520_ipv6
+ neighbor 2001:DB8:3:26::1 peer-group AS520_ipv6
+ !
+ address-family ipv6
+  neighbor AS520_ipv6 route-reflector-client
+  neighbor AS520_ipv6 next-hop-self
+  neighbor 2001:DB8:3:23::1 activate
+  neighbor 2001:DB8:3:24::1 activate
+  neighbor 2001:DB8:3:26::1 activate
+ exit-address-family
+~~~
+~~~
 ~~~
