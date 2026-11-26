@@ -157,3 +157,21 @@ Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State
 2001:DB8:2:34::2
                 4          520     115     115        4    0    0 01:41:07        1
 ~~~
+### Настроим iBGP в ISP Триада и eBGP с ISP Киторн, ISP Ламас и Санкт-Петербург.
+~~~
+R23#sh run | sec bgp
+router bgp 520
+ bgp router-id 10.100.255.23
+ bgp log-neighbor-changes
+ neighbor 2001:DB8:2:23::1 remote-as 101
+ neighbor 2001:DB8:3:25::1 remote-as 520
+ neighbor 2001:DB8:3:25::1 update-source Loopback0
+ !
+ address-family ipv6
+  neighbor 2001:DB8:2:23::1 activate
+  neighbor 2001:DB8:3:25::1 activate
+ exit-address-family
+~~~
+~~~
+
+~~~
