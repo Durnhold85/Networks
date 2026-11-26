@@ -319,3 +319,40 @@ end
  address-family ipv6
   network 2001:DB8:4:1::1/128
 ~~~
+~~~
+R18#sh ipv6 route bgp
+IPv6 Routing Table - default - 8 entries
+Codes: C - Connected, L - Local, S - Static, U - Per-user Static route
+       B - BGP, HA - Home Agent, MR - Mobile Router, R - RIP
+       H - NHRP, I1 - ISIS L1, I2 - ISIS L2, IA - ISIS interarea
+       IS - ISIS summary, D - EIGRP, EX - EIGRP external, NM - NEMO
+       ND - ND Default, NDp - ND Prefix, DCE - Destination, NDr - Redirect
+       O - OSPF Intra, OI - OSPF Inter, OE1 - OSPF ext 1, OE2 - OSPF ext 2
+       ON1 - OSPF NSSA ext 1, ON2 - OSPF NSSA ext 2, la - LISP alt
+       lr - LISP site-registrations, ld - LISP dyn-eid, a - Application
+B   2001:DB8:10::14/128 [20/0]
+     via FE80::A8BB:CCFF:FE01:8030, Ethernet0/2
+B   2001:DB8:10::15/128 [20/0]
+     via FE80::A8BB:CCFF:FE01:8030, Ethernet0/2
+~~~
+~~~
+R15#sh ipv6 route bgp
+IPv6 Routing Table - default - 13 entries
+Codes: C - Connected, L - Local, S - Static, U - Per-user Static route
+       B - BGP, HA - Home Agent, MR - Mobile Router, R - RIP
+       H - NHRP, I1 - ISIS L1, I2 - ISIS L2, IA - ISIS interarea
+       IS - ISIS summary, D - EIGRP, EX - EIGRP external, NM - NEMO
+       ND - ND Default, NDp - ND Prefix, DCE - Destination, NDr - Redirect
+       O - OSPF Intra, OI - OSPF Inter, OE1 - OSPF ext 1, OE2 - OSPF ext 2
+       ON1 - OSPF NSSA ext 1, ON2 - OSPF NSSA ext 2, la - LISP alt
+       lr - LISP site-registrations, ld - LISP dyn-eid, a - Application
+B   2001:DB8:4:1::1/128 [20/0]
+     via FE80::A8BB:CCFF:FE01:5000, Ethernet0/2
+
+R15#ping 2001:DB8:4:1::1 source 2001:DB8:10::15
+Type escape sequence to abort.
+Sending 5, 100-byte ICMP Echos to 2001:DB8:4:1::1, timeout is 2 seconds:
+Packet sent with a source address of 2001:DB8:10::15
+!!!!!
+Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+~~~
