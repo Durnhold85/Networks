@@ -222,3 +222,18 @@ router bgp 520
   neighbor 2001:DB8:3:35::2 activate
  exit-address-family
 ~~~
+~~~
+R18#sh run | sec bgp
+router bgp 2042
+ bgp router-id 172.20.255.18
+ bgp log-neighbor-changes
+ bgp bestpath as-path multipath-relax
+ neighbor 2001:DB8:3:34::1 remote-as 520
+ neighbor 2001:DB8:3:35::1 remote-as 520
+ !
+ address-family ipv6
+  network 2001:DB8:4:1::1/128
+  neighbor 2001:DB8:3:34::1 activate
+  neighbor 2001:DB8:3:35::1 activate
+ exit-address-family
+~~~
