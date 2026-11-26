@@ -209,4 +209,16 @@ router bgp 520
  exit-address-family
 ~~~
 ~~~
+R26#sh run | sec bgp
+router bgp 520
+ bgp router-id 10.100.255.26
+ bgp log-neighbor-changes
+ neighbor 2001:DB8:3:25::1 remote-as 520
+ neighbor 2001:DB8:3:25::1 update-source Loopback0
+ neighbor 2001:DB8:3:35::2 remote-as 2042
+ !
+ address-family ipv6
+  neighbor 2001:DB8:3:25::1 activate
+  neighbor 2001:DB8:3:35::2 activate
+ exit-address-family
 ~~~
